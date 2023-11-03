@@ -6,7 +6,7 @@
 ### Development Setup
 Start by cloning the repo.
 ```bash
-git clone https://github.com/Grutschus/human-fall-detection.git .
+git clone https://github.com/Grutschus/human-fall-detection.git
 ```
 
 Setup a Python environment. We recommend using [miniconda](https://docs.conda.io/projects/miniconda/en/latest/#).
