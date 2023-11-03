@@ -1,0 +1,14 @@
+name: human-fall-detection
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+
+  # code-checks
+  - mypy=1.5.1
+  - pre-commit>=2.15.0
+
+  - pip:
+      # code-checks
+      - ruff>=0.1.3
