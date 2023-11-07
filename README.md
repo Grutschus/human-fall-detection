@@ -9,7 +9,7 @@
 Start by cloning the repo.
 
 ```bash
-git clone https://github.com/Grutschus/human-fall-detection.git
+git clone https://github.com/Grutschus/human-fall-detection.git --recurse-submodules
 ```
 
 #### Python Environment
@@ -50,6 +50,8 @@ python demo/demo.py tsn_imagenet-pretrained-r50_8xb32-1x1x8-100e_kinetics400-rgb
 ```
 
 Make sure to replace the device flag if you are running on a different machine (e.g. "mps" for Mac).
+
+#### Pre-commit hooks
 
 Although not strictly necessary, it does make sense to locally install the pre-commit hooks.
 
