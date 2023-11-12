@@ -51,6 +51,31 @@ python demo/demo.py tsn_imagenet-pretrained-r50_8xb32-1x1x8-100e_kinetics400-rgb
 
 Make sure to replace the device flag if you are running on a different machine (e.g. "mps" for Mac).
 
+#### DVC
+
+We use [DVC](https://dvc.org/) to store and version our dataset.
+To run our models and the latest experiments it is not strictly necessary to setup DVC.
+You can download the raw dataset here: [KU Leuven Datasets](https://iiw.kuleuven.be/onderzoek/advise/datasets). Afterwards you can run all of our preprocessing scripts to generate the data we have used for training and evaluation.
+
+However, if you want to directly access the data we use, follow these steps.
+
+**Prerequisites:**
+
+1. DVC (+ optionally the VSCode extenstion) has to be installed. Follow these instructions: [DVC Installation](https://dvc.org/doc/install#installation)
+2. Access Key + Secret for our S3 Bucket (not currently public yet)
+
+**DVC Setup:**
+
+To authenticate with our bucket, add the credentials to your **local** DVC config:
+
+```bash
+dvc remote modify storage access_key_id [ACCESS_KEY_ID]
+dvc remote modify storage secret_access_key [SECRET_ACCESS_KEY]
+```
+
+Alternatively, you can set the environment variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in your terminal.
+For more information please refer to the [DVC docs](https://dvc.org/doc/user-guide/data-management/remote-storage/amazon-s3#custom-authentication).
+
 #### Pre-commit hooks
 
 Although not strictly necessary, it does make sense to locally install the pre-commit hooks.
