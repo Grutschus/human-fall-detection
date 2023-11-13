@@ -1,0 +1,6 @@
+outs:
+- md5: 2625d3636ac5948bfba4c872cbfbed6f.dir
+  size: 23242139148
+  nfiles: 357
+  hash: md5
+  path: videos
