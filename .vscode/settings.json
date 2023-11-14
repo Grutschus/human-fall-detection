@@ -1,0 +1,5 @@
+{
+    "ruff.format.args": [
+        "--config=pyproject.toml"
+    ]
+}
