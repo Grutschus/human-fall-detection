@@ -1,3 +1,4 @@
 [submodule "mmaction2"]
 	path = mmaction2
 	url = git@github.com:Grutschus/mmaction2.git
+	branch = custom_features
