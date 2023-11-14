@@ -1,20 +1,22 @@
-"""This script processes either a path to a video file or a folder containing videos. It produces a new folder containing videos derived from the 
-trimmed input video(s), where each video is segmented into equal-length parts as specified by the user. This code has been adapted from the example 
+"""This script processes either a path to a video file or a folder containing videos. It produces a new folder containing videos derived from the
+trimmed input video(s), where each video is segmented into equal-length parts as specified by the user. This code has been adapted from the example
 demonstrated in a YouTube tutorial, available at the following link: https://www.youtube.com/watch?v=SGsJc1K5xj8.
 """
 
-import os
+
 import ffmpeg
-import pathlib import path
+from pathlib import Path
 import argparse
+import numpy as np
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def trim_video(
-    input_path: Path | str,
-    output_path: Path | str,
-    trim_duration: int 
-) -> str:
-
+    input_path: Path | str, output_path: Path | str, trim_duration: int
+) -> None:
     """Transforms input video(s) into equal-length smaller trimmed video(s) as specified by the user.
 
     Args:
@@ -24,61 +26,59 @@ def trim_video(
     Returns:
         str: message indicate the completion of  .
     """
-    
-    #return  the path(s) of the video(s)  in the input folder
-    video_paths = list(Path(input_path).glob("*.avi")) 
-    
+
+    input_path = Path(input_path)
+    output_path = Path(output_path)
+    output_path.mkdir(parents=True, exist_ok=True)
+
+    # return  the path(s) of the video(s)  in the input folder
+    if input_path.is_file():
+        video_paths = [input_path]
+    else:
+        video_paths = list(input_path.glob("*.avi"))
+
     for video_path in video_paths:
         # return the video's properties
         video_probe = ffmpeg.probe(video_path)
 
         # return the video's duration
         video_duration = video_probe.get("format", {}).get("duration", None)
-        print(video_duration)
-        # return the video's stream 
+        logger.debug(f"Video duration: {video_duration}")
+        # return the video's stream
         input_stream = ffmpeg.input(video_path)
 
         # calculate the number of trimmed videos to be generated
-        
-        trimmed_videos_number= np.ceil(float(video_duration)/trim_duration).astype(int)
-        
+        trimmed_videos_number = np.ceil(float(video_duration) / trim_duration).astype(
+            int
+        )
+
         for n_trim in range(trimmed_videos_number):
-
             # calculate start and end time of the trim
-            trim_start_time=trim_duration*n_trim
-            
-            if n_trim == trimmed_videos_number-1:
-                trim_end_time= np.ceil(float(video_duration)).astype(int)
+            trim_start_time = trim_duration * n_trim
+
+            if n_trim == trimmed_videos_number - 1:
+                trim_end_time = np.ceil(float(video_duration)).astype(int)
             else:
-                trim_end_time=trim_duration*(n_trim+1)
-                
-            # trim the video from trim_start_time to trim_end_time  
-            video = input_stream.trim(start=trim_start_time, end=trim_end_time).setpts("PTS-STARTPTS")
-            
-        # write the trimed video to the output folder 
+                trim_end_time = trim_duration * (n_trim + 1)
 
-            #set up the time format of output file 
-            format_str="{:0"+str(len(str(np.ceil(float(video_duration)).astype(int))))+"d}" #e.g {:03d}
+            # trim the video from trim_start_time to trim_end_time
+            video = input_stream.trim(start=trim_start_time, end=trim_end_time).setpts(
+                "PTS-STARTPTS"
+            )
 
-
-            #return the video file name
-            video_file_name= os.path.splitext(os.path.basename(video_path))[0]
-            
-            #return the video file extention
-            video_file_extension= os.path.splitext(os.path.basename(video_path))[1]
+            # write the trimed video to the output folder
 
             # return the output video path
-            output_file_path= output_path+'/'+video_file_name+str('_')+str(format_str.format(trim_start_time))+str('_')+str(format_str.format(trim_end_time))+video_file_extension
+            output_file_path = output_path.joinpath(
+                Path(video_path).stem + f"_{trim_start_time}_{trim_end_time}" + ".mp4"
+            )  # e.g. output_path/ADL1_Cam2_20_30.avi
 
             # write the video to the output path
-            if os.path.exists(output_file_path):
-                os.remove(output_file_path)
-            output = ffmpeg.output(video, output_file_path)
+            output = ffmpeg.output(video, output_file_path.as_posix(), f="mp4")
             output.run()
-           
-            
-            
-    print('Videos trimming completed successfully.')
+
+    logger.info("Videos trimming completed successfully.")
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -86,11 +86,13 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--input_path",
+        default="data/Fall_Simulation_Data/videos/Fall1_Cam1.avi",
         type=Path,
         help="path of the input video(s)",
     )
     parser.add_argument(
         "--output_path",
+        default="data/Fall_Simulation_Data/trimmed_videos/",
         type=Path,
         help="path of output video(s)",
     )
@@ -100,14 +102,21 @@ def parse_args() -> argparse.Namespace:
         type=int,
         help="the length of the trimed video",
     )
+    parser.add_argument(
+        "--log_level",
+        default="INFO",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        help="set the logging level",
+    )
     args = parser.parse_args()
     return args
 
 
 if __name__ == "__main__":
     args = parse_args()
-    transform(
-        input_path=args.output_path,
+    logger.setLevel(args.log_level)
+    trim_video(
+        input_path=args.input_path,
         output_path=args.output_path,
         trim_duration=args.trim_duration,
     )
