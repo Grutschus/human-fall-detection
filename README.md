@@ -69,8 +69,8 @@ However, if you want to directly access the data we use, follow these steps.
 To authenticate with our bucket, add the credentials to your **local** DVC config:
 
 ```bash
-dvc remote modify storage access_key_id [ACCESS_KEY_ID]
-dvc remote modify storage secret_access_key [SECRET_ACCESS_KEY]
+dvc remote modify --local storage access_key_id [ACCESS_KEY_ID]
+dvc remote modify --local storage secret_access_key [SECRET_ACCESS_KEY]
 ```
 
 Alternatively, you can set the environment variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in your terminal.
