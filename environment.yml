@@ -26,3 +26,4 @@ dependencies:
       - jupyter>=1.0
       - ipympl>=0.9
       - pandas-stubs>=2.1
+      - ffmpeg-python>=0.2
