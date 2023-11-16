@@ -1,0 +1,5 @@
+outs:
+- md5: b66d6a0cc7d845825b0b2656d386d795
+  size: 5356
+  hash: md5
+  path: trimmed_videos_annotations.py
