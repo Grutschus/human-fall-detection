@@ -1,8 +1,37 @@
-from typing import Callable, List, Optional, Union
+from typing import Any, Callable, List, Optional, Union, Protocol
 
 from mmaction.datasets import BaseActionDataset  # type: ignore
 from mmaction.registry import DATASETS  # type: ignore
 from mmaction.utils import ConfigType
+from mmengine.fileio import exists
+import pandas as pd
+
+
+class SamplingStrategy(Protocol):
+    """SamplingStrategy: Callable to generate samples.
+
+    Args:
+        annotation (pd.Series): Annotation of an untrimmed video. The
+            annotation has to adhere to the same format as the `HighQualityFallDataset`
+            annotation file.
+
+    Returns:
+        List[dict]: List of samples. Each sample is a dict containing
+            a `filename`, `label`, and `interval` key."""
+
+    def __call__(self, annotation: pd.Series, *args: Any, **kwargs: Any) -> List[dict]:
+        ...
+
+
+def UniformNonOverlappingSampling(annotation: pd.Series) -> List[dict]:
+    """Samples uniformly from the untrimmed video.
+
+    Args:
+        annotation (pd.Series): Annotation of an untrimmed video. The
+            annotation has to adhere to the same format as the `HighQualityFallDataset`
+            annotation file.
+        clip_len (int): Length of the clips to sample in seconds."""
+    return []
 
 
 @DATASETS.register_module()
@@ -22,6 +51,7 @@ class HighQualityFallDataset(BaseActionDataset):
         - fall_end: timestamp in seconds of the end of the fall
         - lying_start: timestamp in seconds of the start of the lying
         - lying_end: timestamp in seconds of the end of the lying
+        - length: length of the video in seconds
         - fall_visible: boolean indicating whether the fall is visible
             on the video
         - lying_visible: boolean indicating whether the lying is visible
@@ -29,10 +59,10 @@ class HighQualityFallDataset(BaseActionDataset):
 
     Example of a annotation file:
 
-    | video_path                                       | fall_start | fall_end | lying_start | lying_end | fall_visible | lying_visible |
-    |--------------------------------------------------|------------|----------|-------------|-----------|--------------|---------------|
-    | data/Fall_Simulation_Data/videos/Fall30_Cam3.avi | 24.0       | 27.0     | 27.0        | 88.0      | True         | True          |
-    | data/Fall_Simulation_Data/videos/ADL16_Cam1.avi  |            |          |             |           |              |               |
+    | video_path                                       | fall_start | fall_end | lying_start | lying_end | length |fall_visible | lying_visible |
+    |--------------------------------------------------|------------|----------|-------------|-----------|--------|-------------|---------------|
+    | data/Fall_Simulation_Data/videos/Fall30_Cam3.avi | 24.0       | 27.0     | 27.0        | 88.0      | 240.0  |True         | True          |
+    | data/Fall_Simulation_Data/videos/ADL16_Cam1.avi  |            |          |             |           | 325    |             |               |
 
     Args:
         ann_file (str): Path to the annotation file.
@@ -57,7 +87,7 @@ class HighQualityFallDataset(BaseActionDataset):
     def __init__(
         self,
         ann_file: str,
-        sampling_strategy: Callable,  # TODO: create sampling strategy type
+        sampling_strategy: SamplingStrategy,
         pipeline: List[Union[dict, Callable]],
         data_prefix: ConfigType = dict(video=""),
         multi_class: bool = False,
@@ -81,7 +111,11 @@ class HighQualityFallDataset(BaseActionDataset):
         )
 
     def load_data_list(self) -> List[dict]:
-        return super().load_data_list()
+        exists(self.ann_file)
+        annotations = pd.read_csv(self.ann_file)
+        data_list = []
+        for _, annotation in annotations.iterrows():
+            data_list_annotation = self.sampling_strategy(annotation)
+            data_list.extend(data_list_annotation)
 
-    def get_data_info(self, idx: int) -> dict:
-        return super().get_data_info(idx)
+        return data_list
