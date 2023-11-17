@@ -1,5 +1,8 @@
 {
     "ruff.format.args": [
         "--config=pyproject.toml"
+    ],
+    "mypy-type-checker.args": [
+        "--config-file=pyproject.toml"
     ]
 }
