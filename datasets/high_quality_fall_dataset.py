@@ -6,8 +6,8 @@ from mmaction.registry import DATASETS
 from mmaction.utils import ConfigType
 from mmengine.fileio import exists
 
-from datasets.transforms.LabelStrategy import LabelStrategy
-from datasets.transforms.SamplingStrategy import SamplingStrategy
+from datasets.transforms.label_strategy import LabelStrategy
+from datasets.transforms.sampling_strategy import SamplingStrategy
 
 
 @DATASETS.register_module()

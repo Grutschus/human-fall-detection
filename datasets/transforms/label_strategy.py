@@ -1,9 +1,8 @@
 import abc
-from typing import List
 
 import pandas as pd
 
-from datasets.transforms.SamplingStrategy import IntervalInSeconds
+from datasets.transforms.sampling_strategy import IntervalInSeconds
 from dataclasses import dataclass
 
 
@@ -13,19 +12,31 @@ class LabelDescription:
         in the annotation file.
 
     Args:
-        names (tuple[str]): Names of the actions.
-        start_timestamp_names (tuple[str]): Names of the columns for the start timestamps.
-        end_timestamp_names (tuple[str]): Names of the columns for the end timestamps.
-        visible_names (tuple[str]): Names of the columns for the visibility of actions.
+        names (list[str]): Names of the actions.
+        start_timestamp_names (list[str]): Names of the columns for the start timestamps.
+        end_timestamp_names (list[str]): Names of the columns for the end timestamps.
+        visible_names (list[str]): Names of the columns for the visibility of actions.
         other_class (int): Index of the `other` class.
 
     """
 
-    names: tuple[str]
-    start_timestamp_names: tuple[str]
-    end_timestamp_names: tuple[str]
-    visible_names: tuple[str]
+    names: list[str]
+    start_timestamp_names: list[str]
+    end_timestamp_names: list[str]
+    visible_names: list[str]
     other_class: int
+
+    def __post_init__(self):
+        assert (
+            len(self.names) - 1
+            == len(self.start_timestamp_names)
+            == len(self.end_timestamp_names)
+            == len(self.visible_names)
+        ), "There has to be one more name than timestamp and visibility names, due to the other class."
+
+        assert self.other_class < len(
+            self.names
+        ), "The index of the other class has to be smaller than the number of classes."
 
 
 class LabelStrategy(abc.ABC):
@@ -39,7 +50,7 @@ class LabelStrategy(abc.ABC):
         self.label_description = label_description
 
     @abc.abstractmethod
-    def label(self, annotation: pd.Series, clip: IntervalInSeconds) -> List[int]:
+    def label(self, annotation: pd.Series, clip: IntervalInSeconds) -> list[int]:
         """Extracts the label from the annotation and the clip.
 
         Args:
@@ -53,8 +64,8 @@ class LabelStrategy(abc.ABC):
         ...
 
 
-class ExistanceLabel(LabelStrategy):
-    """Generates a label based on the existance of actions within the clip.
+class ExistenceLabel(LabelStrategy):
+    """Generates a label based on the existence of actions within the clip.
 
     If the clip contains an action, the corresponding label is given.
 
@@ -64,11 +75,17 @@ class ExistanceLabel(LabelStrategy):
             or as a percentage of the clip length (False). Defaults to True
     """
 
-    def __init__(self, threshold: float = 0.0, absolute_threshold: bool = True) -> None:
+    def __init__(
+        self,
+        label_description: LabelDescription,
+        threshold: float = 0.0,
+        absolute_threshold: bool = True,
+    ) -> None:
+        super().__init__(label_description)
         self.threshold = threshold
         self.absolute_threshold = absolute_threshold
 
-    def label(self, annotation: pd.Series, clip: IntervalInSeconds) -> List[int]:
+    def label(self, annotation: pd.Series, clip: IntervalInSeconds) -> list[int]:
         labels = []
         labeled_time = 0.0
         for idx, (start_name, end_name, visible_name) in enumerate(
