@@ -1,2 +1,2 @@
 video_path,video_name,category,camera_id,scenario_id,fall_start,fall_end,lying_start,lying_end,length,fall_visible,lying_visible,ranking
-test/test_data/videos/Fall1_Cam1.avi,Fall1_Cam1,Fall,1,1,47.0,50.0,50.0,125.0,138,True,True,5.0
+tests/test_data/videos/Fall1_Cam1.avi,Fall1_Cam1,Fall,1,1,47.0,50.0,50.0,125.0,138,True,True,5.0

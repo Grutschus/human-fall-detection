@@ -23,6 +23,8 @@ class TestExistanceLabel(unittest.TestCase):
         assert not el._overlap_over_threshold(5, 6, 10, True)
         assert el._overlap_over_threshold(5, 0.4, 10, False)
         assert not el._overlap_over_threshold(5, 0.6, 10, False)
+        assert not el._overlap_over_threshold(0, 0, 10, True)
+        assert not el._overlap_over_threshold(0, 0, 10, False)
 
     def test_label(self):
         el = ExistenceLabel(mock_label_description)

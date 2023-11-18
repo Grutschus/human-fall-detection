@@ -39,6 +39,17 @@ class LabelDescription:
         ), "The index of the other class has to be smaller than the number of classes."
 
 
+HQFD_LABEL_DESCRIPTION = LabelDescription(
+    names=["fall", "lying", "other"],
+    start_timestamp_names=["fall_start", "lying_start"],
+    end_timestamp_names=["fall_end", "lying_end"],
+    visible_names=["fall_visible", "lying_visible"],
+    other_class=2,
+)
+"""Label description for the HighQualityFallDataset with the annotation file
+ as we have built it."""
+
+
 class LabelStrategy(abc.ABC):
     """Generic labeling strategy. Used to extract labels from an annotation
     and a given clip.
@@ -133,6 +144,6 @@ class ExistenceLabel(LabelStrategy):
         self, overlap: float, threshold: float, clip_length: float, absolute: bool
     ) -> bool:
         if absolute:
-            return overlap >= threshold
+            return overlap > threshold
         else:
-            return overlap / clip_length >= threshold
+            return overlap / clip_length > threshold

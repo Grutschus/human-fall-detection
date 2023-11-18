@@ -15,7 +15,7 @@ class ClipVideo(BaseTransform):
 
         - `interval`: a tuple of two floats,
             the start and end of the interval in seconds.
-        - `fps`
+        - `avg_fps`
 
     Modified Keys:
 
@@ -33,7 +33,7 @@ class ClipVideo(BaseTransform):
             dict: The result dict.
         """
         interval = results["interval"]
-        fps = results["fps"]
+        fps = results["avg_fps"]
         offset = results["start_index"] if "start_index" in results else 0
         start_frame = int(interval[0] * fps) + offset
         end_frame = int(interval[1] * fps) + offset
