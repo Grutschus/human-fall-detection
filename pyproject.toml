@@ -57,5 +57,5 @@ skip-magic-trailing-comma = false
 line-ending = "auto"
 
 [[tool.mypy.overrides]]
-module = "mmaction.*"
+module = ["mmaction.*", "mmengine.*"]
 ignore_missing_imports = true

@@ -1,37 +1,13 @@
-from typing import Any, Callable, List, Optional, Union, Protocol
+from typing import Callable, List, Optional, Union
 
-from mmaction.datasets import BaseActionDataset  # type: ignore
-from mmaction.registry import DATASETS  # type: ignore
+import pandas as pd
+from mmaction.datasets import BaseActionDataset
+from mmaction.registry import DATASETS
 from mmaction.utils import ConfigType
 from mmengine.fileio import exists
-import pandas as pd
 
-
-class SamplingStrategy(Protocol):
-    """SamplingStrategy: Callable to generate samples.
-
-    Args:
-        annotation (pd.Series): Annotation of an untrimmed video. The
-            annotation has to adhere to the same format as the `HighQualityFallDataset`
-            annotation file.
-
-    Returns:
-        List[dict]: List of samples. Each sample is a dict containing
-            a `filename`, `label`, and `interval` key."""
-
-    def __call__(self, annotation: pd.Series, *args: Any, **kwargs: Any) -> List[dict]:
-        ...
-
-
-def UniformNonOverlappingSampling(annotation: pd.Series) -> List[dict]:
-    """Samples uniformly from the untrimmed video.
-
-    Args:
-        annotation (pd.Series): Annotation of an untrimmed video. The
-            annotation has to adhere to the same format as the `HighQualityFallDataset`
-            annotation file.
-        clip_len (int): Length of the clips to sample in seconds."""
-    return []
+from datasets.transforms.LabelStrategy import LabelStrategy
+from datasets.transforms.SamplingStrategy import SamplingStrategy
 
 
 @DATASETS.register_module()
@@ -66,7 +42,8 @@ class HighQualityFallDataset(BaseActionDataset):
 
     Args:
         ann_file (str): Path to the annotation file.
-        sampling_strategy (SamplingStrategy): Callable used to sample.
+        sampling_strategy (SamplingStrategy): Strategy used to sample clips.
+        label_strategy (LabelStrategy): Strategy used to label clips.
         pipeline (List[Union[dict, ConfigDict, Callable]]): A sequence of
             data transforms. Should include a `ClipVideo` transform.
         data_prefix (dict or ConfigDict): Path to a directory where videos
@@ -88,6 +65,7 @@ class HighQualityFallDataset(BaseActionDataset):
         self,
         ann_file: str,
         sampling_strategy: SamplingStrategy,
+        label_strategy: LabelStrategy,
         pipeline: List[Union[dict, Callable]],
         data_prefix: ConfigType = dict(video=""),
         multi_class: bool = False,
@@ -98,6 +76,7 @@ class HighQualityFallDataset(BaseActionDataset):
         **kwargs,
     ) -> None:
         self.sampling_strategy = sampling_strategy
+        self.label_strategy = label_strategy
         super().__init__(
             ann_file,
             pipeline=pipeline,
@@ -115,7 +94,17 @@ class HighQualityFallDataset(BaseActionDataset):
         annotations = pd.read_csv(self.ann_file)
         data_list = []
         for _, annotation in annotations.iterrows():
-            data_list_annotation = self.sampling_strategy(annotation)
-            data_list.extend(data_list_annotation)
+            sampled_clips = self.sampling_strategy.sample(annotation)
+            labels = [
+                self.label_strategy.label(annotation, clip) for clip in sampled_clips
+            ]
 
+            for clip, label in zip(sampled_clips, labels):
+                data_list.append(
+                    {
+                        "filename": annotation["video_path"],
+                        "label": label,
+                        "interval": clip,
+                    }
+                )
         return data_list
