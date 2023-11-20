@@ -86,7 +86,6 @@ class HighQualityFallDataset(BaseActionDataset):
             start_index=start_index,
             modality=modality,
             test_mode=test_mode,
-            **kwargs,
         )
 
     def load_data_list(self) -> List[dict]:
