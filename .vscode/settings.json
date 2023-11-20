@@ -1,5 +1,13 @@
 {
     "ruff.format.args": [
         "--config=pyproject.toml"
-    ]
+    ],
+    "mypy-type-checker.args": [
+        "--config-file=pyproject.toml"
+    ],
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }
