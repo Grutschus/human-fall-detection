@@ -39,10 +39,12 @@ ann_file_train = "tests/test_data/test_annotation.csv"
 train_pipeline = [
     dict(type="DecordInit"),
     dict(type="ClipVideo"),
-    dict(type="SampleFrames", clip_len=16, frame_interval=4, num_clips=5),
+    dict(type="SampleFrames", clip_len=16, frame_interval=4, num_clips=1),
     dict(type="DecordDecode"),
     dict(type="Resize", scale=(-1, 224)),
-    dict(type="ThreeCrop", crop_size=224),
+    dict(type="RandomResizedCrop"),
+    dict(type="Resize", scale=(224, 224), keep_ratio=False),
+    dict(type="Flip", flip_ratio=0.5),
     dict(type="FormatShape", input_format="NCTHW"),
     dict(type="PackActionInputs"),
 ]
