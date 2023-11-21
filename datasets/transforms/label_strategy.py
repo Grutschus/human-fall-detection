@@ -1,9 +1,10 @@
 import abc
+from dataclasses import dataclass
 
 import pandas as pd
 
 from datasets.transforms.sampling_strategy import IntervalInSeconds
-from dataclasses import dataclass
+from registry import LABEL_STRATEGIES
 
 
 @dataclass
@@ -57,8 +58,11 @@ class LabelStrategy(abc.ABC):
     Args:
         label_description (LabelDescription): Description of the labels."""
 
-    def __init__(self, label_description: LabelDescription) -> None:
-        self.label_description = label_description
+    def __init__(self, label_description: LabelDescription | dict) -> None:
+        if isinstance(label_description, dict):
+            self.label_description = LabelDescription(**label_description)
+        else:
+            self.label_description = label_description
 
     @abc.abstractmethod
     def label(self, annotation: pd.Series, clip: IntervalInSeconds) -> list[int]:
@@ -75,6 +79,7 @@ class LabelStrategy(abc.ABC):
         ...
 
 
+@LABEL_STRATEGIES.register_module()
 class ExistenceLabel(LabelStrategy):
     """Generates a label based on the existence of actions within the clip.
 
@@ -88,7 +93,7 @@ class ExistenceLabel(LabelStrategy):
 
     def __init__(
         self,
-        label_description: LabelDescription,
+        label_description: LabelDescription | dict,
         threshold: float = 0.0,
         absolute_threshold: bool = True,
     ) -> None:
