@@ -12,16 +12,16 @@ model = dict(
         type="VisionTransformer",
         img_size=224,
         patch_size=16,
-        embed_dims=768,
+        embed_dims=384,
         depth=12,
-        num_heads=12,
+        num_heads=6,
         mlp_ratio=4,
         qkv_bias=True,
         num_frames=16,
         norm_cfg=dict(type="LN", eps=1e-6),
     ),
     cls_head=dict(
-        type="TimeSformerHead", num_classes=3, in_channels=768, average_clips="prob"
+        type="TimeSformerHead", num_classes=3, in_channels=384, average_clips="prob", multi_class=True
     ),
     # TODO: update this to fit our dataset
     data_preprocessor=dict(
@@ -51,7 +51,7 @@ train_pipeline = [
 
 train_dataloader = dict(
     batch_size=1,
-    num_workers=0,
+    num_workers=8,
     persistent_workers=False,
     sampler=dict(type="DefaultSampler", shuffle=False),
     dataset=dict(
@@ -69,7 +69,7 @@ train_dataloader = dict(
         ),
         ann_file=ann_file_train,
         pipeline=train_pipeline,
-        multiclass=True,
+        multi_class=True,
         num_classes=3,
     ),
 )
