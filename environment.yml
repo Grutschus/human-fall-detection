@@ -8,6 +8,7 @@ dependencies:
 
   # code-checks
   - pre-commit>=2.15
+  - pytest>=7.4
 
   # framework
   - pytorch::pytorch>=2.1

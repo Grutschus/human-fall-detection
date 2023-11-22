@@ -1,0 +1,15 @@
+Bootstrap: localimage
+From: /apps/containers/PyTorch/PyTorch-2.1.0-NGC-23.09.sif
+
+
+%files
+    containers/requirements.txt
+    /mimer/NOBACKUP/groups/naiss2023-22-1160/human-fall-detection/mmaction2
+
+%post
+    export DEBIAN_FRONTEND="noninteractive" && apt-get update -y && apt-get install -y python3-opencv
+    pip install -r containers/requirements.txt
+    mim install mmengine mmcv mmdet mmpose
+    cd /mimer/NOBACKUP/groups/naiss2023-22-1160/human-fall-detection/mmaction2 && pip install -v -e .
+    # For some reason there is a wrong version of opencv installed
+    pip uninstall -y opencv
