@@ -21,7 +21,11 @@ model = dict(
         norm_cfg=dict(type="LN", eps=1e-6),
     ),
     cls_head=dict(
-        type="TimeSformerHead", num_classes=3, in_channels=384, average_clips="prob", multi_class=True
+        type="TimeSformerHead",
+        num_classes=3,
+        in_channels=384,
+        average_clips="prob",
+        multi_class=True,
     ),
     # TODO: update this to fit our dataset
     data_preprocessor=dict(
