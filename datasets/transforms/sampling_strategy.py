@@ -3,6 +3,8 @@ from typing import List, Tuple
 
 import pandas as pd
 
+from registry import SAMPLING_STRATEGIES
+
 IntervalInSeconds = Tuple[float, float]
 
 
@@ -24,6 +26,7 @@ class SamplingStrategy(abc.ABC):
         ...
 
 
+@SAMPLING_STRATEGIES.register_module()
 class UniformSampling(SamplingStrategy):
     """Samples uniformly from the untrimmed video.
 

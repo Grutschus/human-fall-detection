@@ -1,0 +1,5 @@
+# PyTorch is preinstalled in the image
+openpyxl>=3.0
+openmim>=0.3
+ffmpeg-python>=0.2
+dvc[s3]

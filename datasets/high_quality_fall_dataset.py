@@ -8,6 +8,7 @@ from mmengine.fileio import exists
 
 from datasets.transforms.label_strategy import LabelStrategy
 from datasets.transforms.sampling_strategy import SamplingStrategy
+from registry import LABEL_STRATEGIES, SAMPLING_STRATEGIES
 
 
 @DATASETS.register_module()
@@ -64,8 +65,8 @@ class HighQualityFallDataset(BaseActionDataset):
     def __init__(
         self,
         ann_file: str,
-        sampling_strategy: SamplingStrategy,
-        label_strategy: LabelStrategy,
+        sampling_strategy: SamplingStrategy | dict,
+        label_strategy: LabelStrategy | dict,
         pipeline: List[Union[dict, Callable]],
         data_prefix: ConfigType = dict(video=""),
         multi_class: bool = False,
@@ -75,8 +76,16 @@ class HighQualityFallDataset(BaseActionDataset):
         test_mode: bool = False,
         **kwargs,
     ) -> None:
-        self.sampling_strategy = sampling_strategy
-        self.label_strategy = label_strategy
+        if isinstance(sampling_strategy, dict):
+            built_sampling_strategy = SAMPLING_STRATEGIES.build(sampling_strategy)  # type: SamplingStrategy
+        else:
+            built_sampling_strategy = sampling_strategy
+        self.sampling_strategy = built_sampling_strategy
+        if isinstance(label_strategy, dict):
+            built_label_strategy = LABEL_STRATEGIES.build(label_strategy)  # type: LabelStrategy
+        else:
+            built_label_strategy = label_strategy
+        self.label_strategy = built_label_strategy
         super().__init__(
             ann_file,
             pipeline=pipeline,
@@ -86,7 +95,6 @@ class HighQualityFallDataset(BaseActionDataset):
             start_index=start_index,
             modality=modality,
             test_mode=test_mode,
-            **kwargs,
         )
 
     def load_data_list(self) -> List[dict]:

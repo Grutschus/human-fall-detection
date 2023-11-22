@@ -1,6 +1,7 @@
 [core]
     remote = storage
     autostage = true
+    hardlink_lock = true
 ['remote "storage"']
     url = s3://human-fall-detection/
     endpointurl = https://s3.tebi.io
