@@ -14,7 +14,18 @@ class SamplingStrategy:
     def stratifiedSampling(self):
         annotation_file = pd.read_csv(self.annotationFilePath)
 
-        
+        print(annotation_file)
+
+
+
+strat = SamplingStrategy("self", "self", "ata/high_quality_fall_annotations.csv")
+
+strat.stratifiedSampling()
+
+
+
+
+
 
 
 
