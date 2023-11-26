@@ -56,6 +56,10 @@ skip-magic-trailing-comma = false
 # Like Black, automatically detect the appropriate line ending.
 line-ending = "auto"
 
+[tool.ruff.lint.per-file-ignores]
+# Ignore imports at the top of file error in notebooks.
+"**.ipynb" = ["E402"]
+
 [[tool.mypy.overrides]]
 module = ["mmaction.*", "mmengine.*"]
 ignore_missing_imports = true
