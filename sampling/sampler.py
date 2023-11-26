@@ -138,7 +138,49 @@ class Sampler:
             
         # Generate samples
         self.outputSamples(sample_list, output_path)    
-    
+    def uniformSampling(self, output_path, trim_len=10, samples_per_min=1):
+        """
+        Uniform sampling only samples from videos which contain all three 
+        actions (ADL, falling, lying). From these videos, samples are extracted from a uniform distribution using videos. 
+        :param output_path: filepath for sample outputs
+        :param trim_len: sample video length in seconds (defaults to 10) 
+        :param samples_per_min: amount of samples per minute from ADL and lying activities 
+        (defaults to 1)
+        """
+            
+
+        # Read annotation file to dataframe
+        df = pd.read_csv(self.ann_file)
+
+        # Filter for only fall videos
+        df = df[df['category'] == "Fall"] 
+
+        # Reset index after filtering
+        df = df.reset_index()
+
+        sample_list = []
+
+        for i in df.index:
+
+            # Get video length timestamps
+            video_end = float(df.loc[i, 'length'])
+
+                
+            # Calculate number of samples for ADL and lying activities
+            n_samples = round(video_end / 60) * samples_per_min
+
+            # Sample uniform on the video interval
+            samples = np.random.uniform(size=n_samples, low=0, high=video_end)
+
+            # Create sample list [video path, [sample timestamps]]
+            sample_list.append([
+                df.loc[i, "video_path"], 
+                samples.tolist()
+                ])
+        
+        # Generate samples
+        self.outputSamples(sample_list, output_path)
+            
     def outputSamples(self, sample_list, output_path, trim_len=10):
         """
         Utility function for trimming input videos and outputting them
