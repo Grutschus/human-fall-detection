@@ -84,7 +84,60 @@ class Sampler:
             
         # Generate samples
         self.outputSamples(sample_list, output_path)
-    
+    def normalSampling(self, output_path, trim_len=10, samples_per_min=1):
+        """
+        Normal sampling only samples from videos which contain all three 
+        actions (ADL, falling, lying). From these videos, samples are extracted from a normal distribution using videos. 
+        The mean of the distribution is set to the middle of the fall interval, and the standard deviation is determined by 
+        the minimum value between the start of the video to the middle of the fall interval and the middle of the fall interval 
+        to the end of the video.
+        :param output_path: filepath for sample outputs
+        :param trim_len: sample video length in seconds (defaults to 10) 
+        :param samples_per_min: amount of samples per minute from ADL and lying activities 
+        (defaults to 1)
+        """
+        
+        # Read annotation file to dataframe
+        df = pd.read_csv(self.ann_file)
+        
+        # Filter for only fall videos
+        df = df[df['category'] == "Fall"] 
+        
+        # Reset index after filtering
+        df = df.reset_index()
+        
+        sample_list = []
+
+        for i in df.index:
+            
+            # Get timestamps
+            fall_start = float(df.loc[i, 'fall_start'])
+            fall_end = float(df.loc[i, 'fall_end'])
+            video_end = float(df.loc[i, 'length'])
+            
+            # Calculate the middle of the fall interval
+            middle_of_fall_interval= (fall_start+ fall_end)/2
+            
+            # Calculate video length before and after middle of the fall interval
+            video_length_before_fall_middle=middle_of_fall_interval
+            video_length_after_fall_middle=video_end-middle_of_fall_interval
+            
+            # Calculate number of samples for ADL and lying activities
+            n_samples = round(video_end / 60) * samples_per_min
+            
+            # Sample normal on the video interval
+            mean=middle_of_fall_interval
+            std=min(video_length_before_fall_middle,video_length_after_fall_middle)
+            samples = np.random.normal(size=n_samples, loc=mean, scale=(std/3))
+            
+            # Create sample list [video path, [sample timestamps]]
+            sample_list.append([
+                df.loc[i, "video_path"], 
+                samples.tolist()
+            ])
+            
+        # Generate samples
+        self.outputSamples(sample_list, output_path)    
     
     def outputSamples(self, sample_list, output_path, trim_len=10):
         """
