@@ -33,10 +33,11 @@ class ClipVideo(BaseTransform):
             dict: The result dict.
         """
         interval = results["interval"]
+        total_frames = results["total_frames"]
         fps = results["avg_fps"]
         offset = results["start_index"] if "start_index" in results else 0
         start_frame = int(interval[0] * fps) + offset
-        end_frame = int(interval[1] * fps) + offset
+        end_frame = min(int(interval[1] * fps) + offset, total_frames)
         results["start_index"] = start_frame
         results["total_frames"] = end_frame - start_frame
         return results
