@@ -1,7 +1,6 @@
 from pathlib import Path
 import ffmpeg
 import argparse
-import numpy as np
 import logging
 import pandas as pd
 import math
@@ -143,7 +142,7 @@ class Sampler:
         # Generate samples
         self.outputSamples(sample_list, output_path)    
 
-        
+
     def uniformSampling(self, output_path, trim_len=10, samples_per_min=1):
         """
         Uniform sampling only samples from videos which contain all three 
