@@ -44,11 +44,11 @@ train_dataloader = (
             type=dataset_type,
             sampling_strategy=sampling_strategy,
             label_strategy=label_strategy,
+            ann_file=ann_file_train,
+            pipeline=train_pipeline,
+            multi_class=True,
+            num_classes=3,
         ),
-        ann_file=ann_file_train,
-        pipeline=train_pipeline,
-        multi_class=True,
-        num_classes=3,
     ),
 )
 
