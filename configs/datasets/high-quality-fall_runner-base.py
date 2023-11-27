@@ -34,21 +34,19 @@ train_pipeline = [
     dict(type="PackActionInputs"),
 ]
 
-train_dataloader = (
-    dict(
-        batch_size=1,  # Limited by GPU memory
-        num_workers=8,
-        persistent_workers=True,
-        sampler=dict(type="DefaultSampler", shuffle=True),
-        dataset=dict(
-            type=dataset_type,
-            sampling_strategy=sampling_strategy,
-            label_strategy=label_strategy,
-            ann_file=ann_file_train,
-            pipeline=train_pipeline,
-            multi_class=True,
-            num_classes=3,
-        ),
+train_dataloader = dict(
+    batch_size=1,  # Limited by GPU memory
+    num_workers=8,
+    persistent_workers=True,
+    sampler=dict(type="DefaultSampler", shuffle=True),
+    dataset=dict(
+        type=dataset_type,
+        sampling_strategy=sampling_strategy,
+        label_strategy=label_strategy,
+        ann_file=ann_file_train,
+        pipeline=train_pipeline,
+        multi_class=True,
+        num_classes=3,
     ),
 )
 
