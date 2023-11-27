@@ -76,16 +76,20 @@ class HighQualityFallDataset(BaseActionDataset):
         test_mode: bool = False,
         **kwargs,
     ) -> None:
+        # Bug in MMENGINE: kwarg `custom_imports` is not removed from kwargs
+        # this causes an error when building the dataset
+        # TODO: Create an issue on MMENGINE, can be fixed here:
+        # https://github.com/open-mmlab/mmengine/blob/85c0976bc2434157f786d44cdd8f0fb2955414f0/mmengine/config/config.py#L462C34-L462C34
+        kwargs.pop("custom_imports", None)
+
         if isinstance(sampling_strategy, dict):
-            built_sampling_strategy = SAMPLING_STRATEGIES.build(sampling_strategy)  # type: SamplingStrategy
+            self.sampling_strategy = SAMPLING_STRATEGIES.build(sampling_strategy)  # type: SamplingStrategy
         else:
-            built_sampling_strategy = sampling_strategy
-        self.sampling_strategy = built_sampling_strategy
+            self.sampling_strategy = sampling_strategy
         if isinstance(label_strategy, dict):
-            built_label_strategy = LABEL_STRATEGIES.build(label_strategy)  # type: LabelStrategy
+            self.label_strategy = LABEL_STRATEGIES.build(label_strategy)  # type: LabelStrategy
         else:
-            built_label_strategy = label_strategy
-        self.label_strategy = built_label_strategy
+            self.label_strategy = label_strategy
         super().__init__(
             ann_file,
             pipeline=pipeline,
@@ -95,6 +99,7 @@ class HighQualityFallDataset(BaseActionDataset):
             start_index=start_index,
             modality=modality,
             test_mode=test_mode,
+            **kwargs,
         )
 
     def load_data_list(self) -> List[dict]:
