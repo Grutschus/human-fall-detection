@@ -35,7 +35,7 @@ train_pipeline = [
 ]
 
 train_dataloader = dict(
-    batch_size=1,  # Limited by GPU memory
+    batch_size=3,  # From VideoMAEv2 repo
     num_workers=8,
     persistent_workers=True,
     sampler=dict(type="DefaultSampler", shuffle=True),
@@ -61,13 +61,13 @@ val_pipeline = [
     ),
     dict(type="DecordDecode"),
     dict(type="Resize", scale=(-1, 224)),
-    dict(type="CenterCrop", crop_size=224),
+    dict(type="CenterCrop", crop_size=224),  # From VideoMAEv2 repo
     dict(type="FormatShape", input_format="NCTHW"),
     dict(type="PackActionInputs"),
 ]
 
 val_dataloader = dict(
-    batch_size=1,  # Limited by GPU memory
+    batch_size=3,  # From VideoMAEv2 repo
     num_workers=8,
     persistent_workers=True,
     sampler=dict(type="DefaultSampler", shuffle=False),
@@ -89,16 +89,16 @@ test_pipeline = [
     dict(type="DecordInit"),
     dict(
         type="SampleFrames", clip_len=16, frame_interval=4, num_clips=5, test_mode=True
-    ),
+    ),  # From VideoMAEv2 repo
     dict(type="DecordDecode"),
     dict(type="Resize", scale=(-1, 224)),
-    dict(type="ThreeCrop", crop_size=224),
+    dict(type="ThreeCrop", crop_size=224),  # From VideoMAEv2 repo
     dict(type="FormatShape", input_format="NCTHW"),
     dict(type="PackActionInputs"),
 ]
 
 test_dataloader = dict(
-    batch_size=1,  # Limited by GPU memory
+    batch_size=3,  # From VideoMAEv2 repo
     num_workers=8,
     persistent_workers=True,
     sampler=dict(type="DefaultSampler", shuffle=False),

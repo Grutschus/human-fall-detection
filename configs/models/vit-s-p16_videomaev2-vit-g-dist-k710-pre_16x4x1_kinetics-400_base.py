@@ -1,5 +1,9 @@
 _base_ = ["../default_runtime.py", "../datasets/high-quality-fall_runner-base.py"]
 
+# Finetuning parameters are from VideoMAEv2 repo
+# https://github.com/OpenGVLab/VideoMAEv2/blob/master/docs/FINETUNE.md
+
+
 # ViT-S-P16
 model = dict(
     type="Recognizer3D",
@@ -14,6 +18,7 @@ model = dict(
         qkv_bias=True,
         num_frames=16,
         norm_cfg=dict(type="LN", eps=1e-6),
+        drop_path_rate=0.3,  # From VideoMAEv2 repo
     ),
     cls_head=dict(
         type="TimeSformerHead",
@@ -34,10 +39,17 @@ model = dict(
 load_from = "weights/vit-small-p16_videomaev2-vit-g-dist-k710-pre_16x4x1_kinetics-400_20230510-25c748fd.pth"
 
 # TRAINING CONFIG
-train_cfg = dict(type="EpochBasedTrainLoop", max_epochs=100, val_interval=3)
+train_cfg = dict(type="EpochBasedTrainLoop", max_epochs=35, val_interval=1)
 
 # TODO: Think about fine-tuning param scheduler
-param_scheduler = dict(
+param_scheduler = [
+    dict(
+        type="LinearLR", start_factor=0.001, by_epoch=True, begin=0, end=5
+    ),  # From VideoMAEv2 repo
+]
+
+
+dict(
     type="MultiStepLR",  # Decays the learning rate once the number of epoch reaches one of the milestones
     begin=0,  # Step at which to start updating the learning rate
     end=100,  # Step at which to stop updating the learning rate
@@ -47,14 +59,14 @@ param_scheduler = dict(
 )
 
 optim_wrapper = dict(
-    type="OptimWrapper",  # Name of optimizer wrapper, switch to AmpOptimWrapper to enable mixed precision training
-    optimizer=dict(  # Config of optimizer. Support all kinds of optimizers in PyTorch. Refer to https://pytorch.org/docs/stable/optim.html#algorithms
-        type="SGD",  # Name of optimizer
-        lr=0.01,  # Learning rate
-        momentum=0.9,  # Momentum factor
-        weight_decay=0.0001,
-    ),  # Weight decay
-    clip_grad=dict(max_norm=40, norm_type=2),
+    type="OptimWrapper",
+    optimizer=dict(
+        type="AdamW",  # From VideoMAEv2 repo
+        lr=1e-3,  # From VideoMAEv2 repo
+        weight_decay=0.1,  # From VideoMAEv2 repo
+        betas=(0.9, 0.999),  # From VideoMAEv2 repo
+    ),
+    clip_grad=dict(max_norm=5, norm_type=2),  # From VideoMAEv2 repo
 )
 
 # VALIDATION CONFIG
