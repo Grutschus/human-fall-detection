@@ -193,7 +193,7 @@ class Sampler:
         :param sample_list: a list containing the video name and a list 
         of sample start timestamps, e.g. 
         [data/Fall_Simulation_Data/videos/Fall30_Cam3.avi, 
-         [7.16443459, 15.836356, 104.36721318, 26.32500079]
+         [7.164, 15.836, 104.367, 26.325]
          ]
         :param output_path: filepath for sample outputs
         :param trim_len: sample video length in seconds (defaults to 10) 
@@ -218,7 +218,6 @@ class Sampler:
             
             # Store sample timestamps
             timestamps = sample[1]
-            print(f'Timestamps: {timestamps}')
             
             # Get video data
             video_probe = ffmpeg.probe(path)
@@ -236,7 +235,7 @@ class Sampler:
                 
                 # Create output path
                 output_file_path = output_path.joinpath(
-                    Path(sample[0]).stem + f"_{round(t, 3)}_{round(t+trim_len, 3)}" + ".mp4"
+                    Path(sample[0]).stem + f"_{t}_{t+trim_len}" + ".mp4"
                 )  # e.g. output_path/ADL1_Cam2_20_30.avi
 
                 # Output
