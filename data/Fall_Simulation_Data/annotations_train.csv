@@ -16,7 +16,7 @@ data/Fall_Simulation_Data/videos/Fall7_Cam1.avi,Fall7_Cam1,Fall,1,7,28.0,31.0,31
 data/Fall_Simulation_Data/videos/Fall19_Cam1.avi,Fall19_Cam1,Fall,1,19,55.0,58.0,58.0,225.0,240,True,True,1.0
 data/Fall_Simulation_Data/videos/Fall9_Cam3.avi,Fall9_Cam3,Fall,3,9,78.0,80.0,80.0,203.0,224,True,True,1.0
 data/Fall_Simulation_Data/videos/Fall10_Cam1.avi,Fall10_Cam1,Fall,1,10,23.0,25.0,25.0,168.0,180,True,True,2.0
-data/Fall_Simulation_Data/videos/Fall36_Cam2.avi,Fall36_Cam2,Fall,2,36,32.0,34.0,34.0,175.0,245,True,True,3.0
+data/Fall_Simulation_Data/videos/Fall36_Cam2.avi,Fall36_Cam2,Fall,2,36,32.0,34.0,34.0,175.0,194,True,True,3.0
 data/Fall_Simulation_Data/videos/Fall37_Cam5.avi,Fall37_Cam5,Fall,5,37,30.0,33.0,33.0,88.0,110,True,True,3.0
 data/Fall_Simulation_Data/videos/Fall18_Cam3.avi,Fall18_Cam3,Fall,3,18,88.0,91.0,91.0,243.0,255,True,True,4.0
 data/Fall_Simulation_Data/videos/Fall11_cam4.avi,Fall11_cam4,Fall,4,11,52.0,54.0,54.0,60.0,145,True,True,1.0
@@ -89,7 +89,7 @@ data/Fall_Simulation_Data/videos/ADL17_Cam3.avi,ADL17_Cam3,ADL,3,17,,,,,1875,,,
 data/Fall_Simulation_Data/videos/Fall51_Cam5.avi,Fall51_Cam5,Fall,5,51,28.0,31.0,31.0,140.0,150,True,True,1.0
 data/Fall_Simulation_Data/videos/Fall51_Cam3.avi,Fall51_Cam3,Fall,3,51,28.0,31.0,31.0,140.0,150,True,True,3.0
 data/Fall_Simulation_Data/videos/Fall37_Cam3.avi,Fall37_Cam3,Fall,3,37,30.0,33.0,33.0,88.0,110,True,True,1.0
-data/Fall_Simulation_Data/videos/Fall36_Cam5.avi,Fall36_Cam5,Fall,5,36,32.0,34.0,34.0,175.0,245,True,True,5.0
+data/Fall_Simulation_Data/videos/Fall36_Cam5.avi,Fall36_Cam5,Fall,5,36,32.0,34.0,34.0,175.0,194,True,True,5.0
 data/Fall_Simulation_Data/videos/Fall16_Cam4.avi,Fall16_Cam4,Fall,4,16,12.0,15.0,15.0,177.0,190,True,True,2.0
 data/Fall_Simulation_Data/videos/Fall18_Cam1.avi,Fall18_Cam1,Fall,1,18,88.0,91.0,91.0,243.0,255,True,True,1.0
 data/Fall_Simulation_Data/videos/Fall44_Cam2.avi,Fall44_Cam2,Fall,2,44,26.0,28.0,28.0,31.0,110,True,True,5.0
@@ -97,7 +97,7 @@ data/Fall_Simulation_Data/videos/Fall38_Cam1.avi,Fall38_Cam1,Fall,1,38,24.0,26.0
 data/Fall_Simulation_Data/videos/Fall54_Cam2.avi,Fall54_Cam2,Fall,2,54,43.0,46.0,46.0,184.0,205,True,True,1.0
 data/Fall_Simulation_Data/videos/ADL3_Cam3.avi,ADL3_Cam3,ADL,3,3,,,,,740,,,
 data/Fall_Simulation_Data/videos/Fall47_Cam2.avi,Fall47_Cam2,Fall,2,47,25.0,28.0,28.0,39.0,55,True,True,3.0
-data/Fall_Simulation_Data/videos/Fall36_Cam3.avi,Fall36_Cam3,Fall,3,36,32.0,34.0,34.0,175.0,245,True,True,2.0
+data/Fall_Simulation_Data/videos/Fall36_Cam3.avi,Fall36_Cam3,Fall,3,36,32.0,34.0,34.0,175.0,194,True,True,2.0
 data/Fall_Simulation_Data/videos/Fall42_Cam3.avi,Fall42_Cam3,Fall,3,42,79.0,81.0,81.0,92.0,140,True,True,2.0
 data/Fall_Simulation_Data/videos/Fall55_Cam1.avi,Fall55_Cam1,Fall,1,55,29.0,32.0,32.0,164.0,180,True,True,1.0
 data/Fall_Simulation_Data/videos/ADL4_Cam2.avi,ADL4_Cam2,ADL,2,4,,,,,828,,,
@@ -223,7 +223,7 @@ data/Fall_Simulation_Data/videos/Fall32_Cam1.avi,Fall32_Cam1,Fall,1,32,53.0,55.0
 data/Fall_Simulation_Data/videos/Fall4_Cam3.avi,Fall4_Cam3,Fall,3,4,95.0,96.0,96.0,195.0,235,True,True,3.0
 data/Fall_Simulation_Data/videos/ADL1_Cam5.avi,ADL1_Cam5,ADL,5,1,,,,,1800,,,
 data/Fall_Simulation_Data/videos/Fall25_Cam4.avi,Fall25_Cam4,Fall,4,25,23.0,25.0,25.0,96.0,110,True,True,4.0
-data/Fall_Simulation_Data/videos/Fall36_Cam1.avi,Fall36_Cam1,Fall,1,36,32.0,34.0,34.0,175.0,245,True,True,4.0
+data/Fall_Simulation_Data/videos/Fall36_Cam1.avi,Fall36_Cam1,Fall,1,36,32.0,34.0,34.0,175.0,194,True,True,4.0
 data/Fall_Simulation_Data/videos/Fall41_Cam1.avi,Fall41_Cam1,Fall,1,41,39.0,42.0,42.0,95.0,140,True,True,2.0
 data/Fall_Simulation_Data/videos/Fall49_Cam3.avi,Fall49_Cam3,Fall,3,49,24.0,26.0,26.0,123.0,145,True,False,5.0
 data/Fall_Simulation_Data/videos/Fall19_Cam4.avi,Fall19_Cam4,Fall,4,19,55.0,58.0,58.0,225.0,240,True,True,4.0
@@ -237,7 +237,7 @@ data/Fall_Simulation_Data/videos/ADL11_Cam3.avi,ADL11_Cam3,ADL,3,11,,,,,2130,,,
 data/Fall_Simulation_Data/videos/Fall1_Cam2.avi,Fall1_Cam2,Fall,2,1,47.0,50.0,50.0,125.0,138,True,True,2.0
 data/Fall_Simulation_Data/videos/ADL6_Cam3.avi,ADL6_Cam3,ADL,3,6,,,,,1490,,,
 data/Fall_Simulation_Data/videos/ADL8_Cam4.avi,ADL8_Cam4,ADL,4,8,,,,,880,,,
-data/Fall_Simulation_Data/videos/Fall36_Cam4.avi,Fall36_Cam4,Fall,4,36,32.0,34.0,34.0,175.0,245,True,True,1.0
+data/Fall_Simulation_Data/videos/Fall36_Cam4.avi,Fall36_Cam4,Fall,4,36,32.0,34.0,34.0,175.0,194,True,True,1.0
 data/Fall_Simulation_Data/videos/Fall48_Cam4.avi,Fall48_Cam4,Fall,4,48,32.0,34.0,34.0,47.0,70,True,True,3.0
 data/Fall_Simulation_Data/videos/ADL11_Cam1.avi,ADL11_Cam1,ADL,1,11,,,,,2130,,,
 data/Fall_Simulation_Data/videos/Fall48_Cam5.avi,Fall48_Cam5,Fall,5,48,32.0,34.0,34.0,47.0,70,True,True,5.0
