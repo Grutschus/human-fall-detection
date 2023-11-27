@@ -18,19 +18,21 @@ class Sampler:
         self.ann_file = ann_file_path
 
     
-    def stratifiedSampling(self, output_path, trim_len=10, n_fall_samples=3, samples_per_min=1):
+    def stratifiedSampling(self, sample_output_path, 
+                           trim_len=10, n_fall_samples=3, samples_per_min=1):
         """
         Stratified sampling only samples from videos which contain all three 
         actions (ADL, falling, lying). From these videos, a base rate of fall 
         samples will be sampled uniformly on the fall interval (time where fall happens). 
         ADL and lying activities are sampled based on their ratio of duration based 
         on sample rate.
+        :param sample_output_path: filepath for sample outputs
+        :param label_output_path: filepath for label outputs
         :param trim_len: sample video length in seconds (defaults to 10) 
         :param fall_samples: amount of fall samples to collect from videos where 
         falls occur (defaults to 3) 
         :param samples_per_min: amount of samples per minute from ADL and lying activities 
         (defaults to 1)
-        :param output_path: filepath for sample outputs
         """
         
         # Read annotation file to dataframe
@@ -68,10 +70,10 @@ class Sampler:
             n_ADL2_samples = n_ADL_samples - n_ADL1_samples
             
             # Sample uniformly on the intervals
-            ADL1_samples = np.random.uniform(0, ADL1_time, n_ADL1_samples)
-            ADL2_samples = np.random.uniform(lying_end, video_end, n_ADL2_samples)
-            fall_samples = np.random.uniform(fall_start, fall_end, n_fall_samples)
-            lying_samples = np.random.uniform(lying_start, lying_end, n_lying_samples)
+            ADL1_samples = np.random.uniform(0, ADL1_time, n_ADL1_samples).round(decimals=3)
+            ADL2_samples = np.random.uniform(lying_end, video_end, n_ADL2_samples).round(decimals=3)
+            fall_samples = np.random.uniform(fall_start, fall_end, n_fall_samples).round(decimals=3)
+            lying_samples = np.random.uniform(lying_start, lying_end, n_lying_samples).round(decimals=3)
             
             # Create sample list [video path, [sample timestamps]]
             sample_list.append([
@@ -83,7 +85,9 @@ class Sampler:
             ])
             
         # Generate samples
-        self.outputSamples(sample_list, output_path)
+        self.outputSamples(sample_list, sample_output_path)
+
+
     def normalSampling(self, output_path, trim_len=10, samples_per_min=1):
         """
         Normal sampling only samples from videos which contain all three 
@@ -138,6 +142,8 @@ class Sampler:
             
         # Generate samples
         self.outputSamples(sample_list, output_path)    
+
+        
     def uniformSampling(self, output_path, trim_len=10, samples_per_min=1):
         """
         Uniform sampling only samples from videos which contain all three 
