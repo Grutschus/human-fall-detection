@@ -54,3 +54,12 @@ optim_wrapper = dict(
     ),  # Weight decay
     clip_grad=dict(max_norm=40, norm_type=2),
 )
+
+# VALIDATION CONFIG
+val_evaluator = dict(type="AccMetric")
+val_cfg = dict(type="ValLoop")
+
+
+# TEST CONFIG
+test_evaluator = dict(type="AccMetric")
+test_cfg = dict(type="TestLoop")

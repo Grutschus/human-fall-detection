@@ -1,13 +1,13 @@
 """Default runtime for our experiments."""
 
 # Trying to skip this part, since we have custom registries not in this scope
-# default_scope = "mmaction"
+default_scope = "mmaction"
 work_dir = "experiments"
 custom_imports = dict(imports=["datasets"], allow_failed_imports=False)
 launcher = "none"
 
 default_hooks = dict(
-    runtime_info=dict(type="RuntimeInforHook"),
+    runtime_info=dict(type="RuntimeInfoHook"),
     timer=dict(type="IterTimerHook"),
     logger=dict(type="LoggerHook"),
     param_scheduler=dict(type="ParamSchedulerHook"),
