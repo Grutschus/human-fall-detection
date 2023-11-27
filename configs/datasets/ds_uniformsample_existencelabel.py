@@ -13,6 +13,6 @@ label_strategy = dict(
 )
 ann_file = "tests/test_data/test_annotation.csv"
 pipeline = []  # type: ignore
-multiclass = True
+multi_class = True
 num_classes = 3
 test_mode = True
