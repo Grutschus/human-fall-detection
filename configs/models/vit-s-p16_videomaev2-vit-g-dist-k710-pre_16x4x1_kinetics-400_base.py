@@ -22,11 +22,10 @@ model = dict(
         average_clips="prob",
         multi_class=True,
     ),
-    # TODO: update this to fit our dataset
     data_preprocessor=dict(
         type="ActionDataPreprocessor",
-        mean=[123.675, 116.28, 103.53],
-        std=[58.395, 57.12, 57.375],
+        mean=[102.17311096191406, 98.78225708007812, 92.68714141845703],
+        std=[58.04566192626953, 57.004024505615234, 57.3704948425293],
         format_shape="NCTHW",
     ),
 )
