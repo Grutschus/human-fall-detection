@@ -7,6 +7,7 @@ import math
 import numpy as np
 
 class Sampler:
+    
     def __init__(self, input_path, ann_file_path):
         """
         The Sampler class contains sampling methods for the video input data.
@@ -85,15 +86,61 @@ class Sampler:
             
         # Generate samples
         self.outputSamples(sample_list, sample_output_path)
-
-
-    def normalSampling(self, output_path, trim_len=10, samples_per_min=1):
+    
+    
+    def uniformSampling(self, output_path, trim_len=10, samples_per_min=1):
         """
-        Normal sampling only samples from videos which contain all three 
-        actions (ADL, falling, lying). From these videos, samples are extracted from a normal distribution using videos. 
-        The mean of the distribution is set to the middle of the fall interval, and the standard deviation is determined by 
-        the minimum value between the start of the video to the middle of the fall interval and the middle of the fall interval 
-        to the end of the video.
+        Uniform sampling only samples from videos which contain all three 
+        actions (ADL, falling, lying). From these videos, samples are extracted from a uniform distribution using videos. 
+        :param output_path: filepath for sample outputs
+        :param trim_len: sample video length in seconds (defaults to 10) 
+        :param samples_per_min: amount of samples per minute from ADL and lying activities 
+        (defaults to 1)
+        """
+            
+
+        # Read annotation file to dataframe
+        df = pd.read_csv(self.ann_file)
+
+        # Filter for only fall videos
+        df = df[df['category'] == "Fall"] 
+
+        # Reset index after filtering
+        df = df.reset_index()
+
+        sample_list = []
+
+        for i in df.index:
+
+            # Get video length timestamps
+            video_end = float(df.loc[i, 'length'])
+
+                
+            # Calculate number of samples for ADL and lying activities
+            n_samples = round(video_end / 60) * samples_per_min
+            
+
+            # Sample uniform on the video interval
+            samples = np.random.uniform(size=n_samples, low=0, high=video_end).round(decimals=3)
+
+            # Create sample list [video path, [sample timestamps]]
+            sample_list.append([
+                df.loc[i, "video_path"], 
+                samples.tolist()
+                ])
+        
+        # Generate samples
+        self.outputSamples(sample_list, output_path)
+        
+    
+    def gaussianSampling(self, output_path, trim_len=10, samples_per_min=1):
+        """
+        Gaussian sampling only samples from videos which contain all three 
+        actions (ADL, falling, lying). From these videos, samples are extracted from a 
+        normal distribution using videos. The mean of the distribution is set to the 
+        middle of the fall interval, and the standard deviation is determined by 
+        the minimum value between the start of the video to the middle of the fall 
+        interval and the middle of the fall interval to the end of the video.
         :param output_path: filepath for sample outputs
         :param trim_len: sample video length in seconds (defaults to 10) 
         :param samples_per_min: amount of samples per minute from ADL and lying activities 
@@ -131,7 +178,7 @@ class Sampler:
             # Sample normal on the video interval
             mean=middle_of_fall_interval
             std=min(video_length_before_fall_middle,video_length_after_fall_middle)
-            samples = np.random.normal(size=n_samples, loc=mean, scale=(std/3))
+            samples = np.random.normal(size=n_samples, loc=mean, scale=(std/3)).round(decimals=3)
             
             # Create sample list [video path, [sample timestamps]]
             sample_list.append([
@@ -140,52 +187,9 @@ class Sampler:
             ])
             
         # Generate samples
-        self.outputSamples(sample_list, output_path)    
-
-
-    def uniformSampling(self, output_path, trim_len=10, samples_per_min=1):
-        """
-        Uniform sampling only samples from videos which contain all three 
-        actions (ADL, falling, lying). From these videos, samples are extracted from a uniform distribution using videos. 
-        :param output_path: filepath for sample outputs
-        :param trim_len: sample video length in seconds (defaults to 10) 
-        :param samples_per_min: amount of samples per minute from ADL and lying activities 
-        (defaults to 1)
-        """
-            
-
-        # Read annotation file to dataframe
-        df = pd.read_csv(self.ann_file)
-
-        # Filter for only fall videos
-        df = df[df['category'] == "Fall"] 
-
-        # Reset index after filtering
-        df = df.reset_index()
-
-        sample_list = []
-
-        for i in df.index:
-
-            # Get video length timestamps
-            video_end = float(df.loc[i, 'length'])
-
-                
-            # Calculate number of samples for ADL and lying activities
-            n_samples = round(video_end / 60) * samples_per_min
-
-            # Sample uniform on the video interval
-            samples = np.random.uniform(size=n_samples, low=0, high=video_end)
-
-            # Create sample list [video path, [sample timestamps]]
-            sample_list.append([
-                df.loc[i, "video_path"], 
-                samples.tolist()
-                ])
-        
-        # Generate samples
-        self.outputSamples(sample_list, output_path)
-            
+        self.outputSamples(sample_list, output_path) 
+    
+    
     def outputSamples(self, sample_list, output_path, trim_len=10):
         """
         Utility function for trimming input videos and outputting them
@@ -206,6 +210,7 @@ class Sampler:
         
         for sample in sample_list:
             
+            print(sample) #remove
             # TODO: remove
             if count > 0:
                 break
@@ -243,3 +248,5 @@ class Sampler:
                 output.run()
                 
         logger.info("Videos trimming completed successfully.")
+        
+        
