@@ -38,7 +38,7 @@ log_processor = dict(
     by_epoch=True,
 )
 
-vis_backends = [dict(type="DVCLiveVisBackend", init_kwargs=dict(exp_name="overfit-100-no-val"))]
+vis_backends = [dict(type="TensorboardVisBackend", save_dir="tensorboard")]
 visualizer = dict(type="ActionVisualizer", vis_backends=vis_backends)
 
 log_level = "INFO"
