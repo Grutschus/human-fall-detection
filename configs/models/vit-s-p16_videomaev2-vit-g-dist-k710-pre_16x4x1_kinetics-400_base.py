@@ -25,7 +25,6 @@ model = dict(
         num_classes=3,
         in_channels=384,
         average_clips="prob",
-        multi_class=True,
     ),
     data_preprocessor=dict(
         type="ActionDataPreprocessor",

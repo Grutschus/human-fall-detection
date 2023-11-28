@@ -3,7 +3,7 @@
 dataset_type = "HighQualityFallDataset"
 
 label_strategy = dict(
-    type="ExistenceLabel",
+    type="PriorityLabel",
     label_description=dict(
         names=["fall", "lying", "other"],
         start_timestamp_names=["fall_start", "lying_start"],
@@ -45,9 +45,8 @@ train_dataloader = dict(
         label_strategy=label_strategy,
         ann_file=ann_file_train,
         pipeline=train_pipeline,
-        multi_class=True,
         num_classes=3,
-        indices=100
+        indices=100,
     ),
 )
 
@@ -79,7 +78,6 @@ val_dataloader = train_dataloader
 #         label_strategy=label_strategy,
 #         ann_file=ann_file_val,
 #         pipeline=val_pipeline,
-#         multi_class=True,
 #         num_classes=3,
 #     ),
 # )
@@ -110,7 +108,6 @@ test_dataloader = dict(
         label_strategy=label_strategy,
         ann_file=ann_file_test,
         pipeline=test_pipeline,
-        multi_class=True,
         num_classes=3,
     ),
 )
