@@ -12,6 +12,5 @@
     "python.testing.pytestEnabled": true,
     "jupyter.debugJustMyCode": false,
     "jupyter.notebookFileRoot": "${workspaceFolder}",
-    ,
     "remote.SSH.remoteServerListenOnSocket": true
 }
