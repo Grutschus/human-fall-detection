@@ -30,3 +30,4 @@ dependencies:
       - pandas-stubs>=2.1
       - ffmpeg-python>=0.2
       - dvclive>=3.3
+      - tensorboard>=2.15
