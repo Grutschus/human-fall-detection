@@ -47,6 +47,7 @@ train_dataloader = dict(
         pipeline=train_pipeline,
         multi_class=True,
         num_classes=3,
+        indices=100
     ),
 )
 
@@ -66,21 +67,22 @@ val_pipeline = [
     dict(type="PackActionInputs"),
 ]
 
-val_dataloader = dict(
-    batch_size=3,  # From VideoMAEv2 repo
-    num_workers=8,
-    persistent_workers=True,
-    sampler=dict(type="DefaultSampler", shuffle=False),
-    dataset=dict(
-        type=dataset_type,
-        sampling_strategy=sampling_strategy,
-        label_strategy=label_strategy,
-        ann_file=ann_file_val,
-        pipeline=val_pipeline,
-        multi_class=True,
-        num_classes=3,
-    ),
-)
+val_dataloader = train_dataloader
+# val_dataloader = dict(
+#     batch_size=3,  # From VideoMAEv2 repo
+#     num_workers=8,
+#     persistent_workers=True,
+#     sampler=dict(type="DefaultSampler", shuffle=False),
+#     dataset=dict(
+#         type=dataset_type,
+#         sampling_strategy=sampling_strategy,
+#         label_strategy=label_strategy,
+#         ann_file=ann_file_val,
+#         pipeline=val_pipeline,
+#         multi_class=True,
+#         num_classes=3,
+#     ),
+# )
 
 # TEST
 ann_file_test = "data/Fall_Simulation_Data/annotations_test.csv"

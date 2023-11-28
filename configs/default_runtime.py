@@ -22,7 +22,9 @@ default_hooks = dict(
     sync_buffers=dict(type="SyncBuffersHook"),
 )
 
-custom_hooks = [dict(type="VisualizationHook", enable=True)]
+# Hook disabled since it cannot handle NCTHW tensors
+# TODO fix this
+# custom_hooks = [dict(type="VisualizationHook", enable=True)]
 
 env_cfg = dict(
     cudnn_benchmark=False,
@@ -36,7 +38,7 @@ log_processor = dict(
     by_epoch=True,
 )
 
-vis_backends = [dict(type="DVCLiveVisBackend")]
+vis_backends = [dict(type="DVCLiveVisBackend", init_kwargs=dict(exp_name="overfit-100-no-val"))]
 visualizer = dict(type="ActionVisualizer", vis_backends=vis_backends)
 
 log_level = "INFO"

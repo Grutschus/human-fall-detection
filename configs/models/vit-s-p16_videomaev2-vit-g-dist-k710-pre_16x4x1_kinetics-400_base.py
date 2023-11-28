@@ -48,16 +48,6 @@ param_scheduler = [
     ),  # From VideoMAEv2 repo
 ]
 
-
-dict(
-    type="MultiStepLR",  # Decays the learning rate once the number of epoch reaches one of the milestones
-    begin=0,  # Step at which to start updating the learning rate
-    end=100,  # Step at which to stop updating the learning rate
-    by_epoch=True,  # Whether the scheduled learning rate is updated by epochs
-    milestones=[40, 80],  # Steps to decay the learning rate
-    gamma=0.1,
-)
-
 optim_wrapper = dict(
     type="OptimWrapper",
     optimizer=dict(
