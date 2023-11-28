@@ -59,12 +59,14 @@ optim_wrapper = dict(
 )
 
 # VALIDATION CONFIG
-val_evaluator = dict(type="AccMetric")
+val_evaluator = dict(
+    type="AccMetric", metric_options=dict(top_k_accuracy=dict(topk=(1,)))
+)
 val_cfg = dict(type="ValLoop")
 
 
 # TEST CONFIG
 test_evaluator = dict(
-    type="AccMetric", metric_options=dict(topk_accuracy=dict(topk=(1,)))
+    type="AccMetric", metric_options=dict(top_k_accuracy=dict(topk=(1,)))
 )
 test_cfg = dict(type="TestLoop")

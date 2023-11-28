@@ -15,7 +15,7 @@ default_hooks = dict(
         type="CheckpointHook",
         interval=1,
         by_epoch=True,
-        max_keep_ckpts=5,
+        max_keep_ckpts=3,
         save_best="auto",  # For CE, this is top-1-acc
     ),
     sampler_seed=dict(type="DistSamplerSeedHook"),
@@ -38,7 +38,7 @@ log_processor = dict(
     by_epoch=True,
 )
 
-vis_backends = [dict(type="TensorboardVisBackend", save_dir="tensorboard")]
+vis_backends = [dict(type="TensorboardVisBackend", save_dir="experiments/tensorboard")]
 visualizer = dict(type="ActionVisualizer", vis_backends=vis_backends)
 
 log_level = "INFO"
