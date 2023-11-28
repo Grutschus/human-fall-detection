@@ -64,5 +64,7 @@ val_cfg = dict(type="ValLoop")
 
 
 # TEST CONFIG
-test_evaluator = dict(type="AccMetric")
+test_evaluator = dict(
+    type="AccMetric", metric_options=dict(topk_accuracy=dict(topk=(1,)))
+)
 test_cfg = dict(type="TestLoop")
