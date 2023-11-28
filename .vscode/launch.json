@@ -11,6 +11,22 @@
             ],
             "console": "integratedTerminal",
             "justMyCode": false
+        },
+        {
+            "name": "Debug Training",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/mmaction2/tools/train.py",
+            "args": [
+                "configs/models/vit-s-p16_videomaev2-vit-g-dist-k710-pre_16x4x1_kinetics-400_base.py"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+                "CUDA_VISIBLE_DEVICES": "2"
+            }
         }
     ]
 }
