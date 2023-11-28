@@ -51,6 +51,26 @@ HQFD_LABEL_DESCRIPTION = LabelDescription(
  as we have built it."""
 
 
+def _calculate_interval_overlap(
+    interval1: IntervalInSeconds, interval2: IntervalInSeconds
+) -> float:
+    if (
+        interval1[0] <= interval2[1] and interval1[1] >= interval2[0]
+    ):  # If the intervals overlap
+        return max(0, min(interval1[1], interval2[1]) - max(interval1[0], interval2[0]))
+    else:  # If the intervals do not overlap
+        return 0.0
+
+
+def _overlap_over_threshold(
+    overlap: float, threshold: float, clip_length: float, absolute: bool
+) -> bool:
+    if absolute:
+        return overlap > threshold
+    else:
+        return overlap / clip_length > threshold
+
+
 class LabelStrategy(abc.ABC):
     """Generic labeling strategy. Used to extract labels from an annotation
     and a given clip.
@@ -65,7 +85,7 @@ class LabelStrategy(abc.ABC):
             self.label_description = label_description
 
     @abc.abstractmethod
-    def label(self, annotation: pd.Series, clip: IntervalInSeconds) -> list[int]:
+    def label(self, annotation: pd.Series, clip: IntervalInSeconds) -> list[int] | int:
         """Extracts the label from the annotation and the clip.
 
         Args:
@@ -75,7 +95,7 @@ class LabelStrategy(abc.ABC):
             clip (IntervalInSeconds): Interval of the clip in seconds.
 
         Returns:
-            List[int]: Labels of the clip."""
+            List[int] | int: Labels of the clip. Type is a list, if it is a multi class strategy"""
         ...
 
 
@@ -101,7 +121,7 @@ class ExistenceLabel(LabelStrategy):
         self.threshold = threshold
         self.absolute_threshold = absolute_threshold
 
-    def label(self, annotation: pd.Series, clip: IntervalInSeconds) -> list[int]:
+    def label(self, annotation: pd.Series, clip: IntervalInSeconds) -> list[int] | int:
         labels = []
         labeled_time = 0.0
         for idx, (start_name, end_name, visible_name) in enumerate(
@@ -119,9 +139,9 @@ class ExistenceLabel(LabelStrategy):
                 start = annotation[start_name]
                 end = annotation[end_name]
 
-                overlap = self._calculate_interval_overlap(clip, (start, end))
+                overlap = _calculate_interval_overlap(clip, (start, end))
 
-                if self._overlap_over_threshold(
+                if _overlap_over_threshold(
                     overlap, self.threshold, clip[1] - clip[0], self.absolute_threshold
                 ):
                     labeled_time += overlap
@@ -133,22 +153,38 @@ class ExistenceLabel(LabelStrategy):
             labels.append(self.label_description.other_class)
         return labels
 
-    def _calculate_interval_overlap(
-        self, interval1: IntervalInSeconds, interval2: IntervalInSeconds
-    ) -> float:
-        if (
-            interval1[0] <= interval2[1] and interval1[1] >= interval2[0]
-        ):  # If the intervals overlap
-            return max(
-                0, min(interval1[1], interval2[1]) - max(interval1[0], interval2[0])
-            )
-        else:  # If the intervals do not overlap
-            return 0.0
 
-    def _overlap_over_threshold(
-        self, overlap: float, threshold: float, clip_length: float, absolute: bool
-    ) -> bool:
-        if absolute:
-            return overlap > threshold
-        else:
-            return overlap / clip_length > threshold
+@LABEL_STRATEGIES.register_module()
+class PriorityLabel(ExistenceLabel):
+    """Assigns the label of the action with the highest priority.
+
+    Args:
+    threshold (float): Threshold for the existance of an action. Defaults to 0.
+    absolute_threshold (bool): Whether to use the threshold as an absolute value (True) in seconds
+        or as a percentage of the clip length (False). Defaults to True
+    priority (list[int]): Priority of the actions according to label indices.
+        Priority in the list of indices is in descending order.
+        Defaults to [0, 1, 2].
+    """
+
+    def __init__(
+        self,
+        label_description: LabelDescription | dict,
+        threshold: float = 0.0,
+        absolute_threshold: bool = True,
+        priority: list[int] | None = None,
+    ):
+        super().__init__(label_description, threshold, absolute_threshold)
+        self.priority = priority if priority is not None else [0, 1, 2]
+
+    def label(self, annotation: pd.Series, clip: IntervalInSeconds) -> int:
+        labels = super().label(annotation, clip)
+
+        # Typing check
+        if isinstance(labels, int):
+            return labels
+
+        for priority in self.priority:
+            if priority in labels:
+                return priority
+        return self.label_description.other_class

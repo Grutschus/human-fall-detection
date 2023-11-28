@@ -11,5 +11,6 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "jupyter.debugJustMyCode": false,
-    "jupyter.notebookFileRoot": "${workspaceFolder}"
+    "jupyter.notebookFileRoot": "${workspaceFolder}",
+    "remote.SSH.remoteServerListenOnSocket": true
 }

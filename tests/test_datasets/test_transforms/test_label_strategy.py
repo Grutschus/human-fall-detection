@@ -1,5 +1,9 @@
 import pandas as pd
 from datasets.transforms.label_strategy import ExistenceLabel, LabelDescription
+from datasets.transforms.label_strategy import (
+    _calculate_interval_overlap,
+    _overlap_over_threshold,
+)
 import unittest
 
 mock_label_description = LabelDescription(
@@ -13,18 +17,16 @@ mock_label_description = LabelDescription(
 
 class TestExistanceLabel(unittest.TestCase):
     def test_calculate_interval_overlap(self):
-        el = ExistenceLabel(mock_label_description)
-        assert el._calculate_interval_overlap((1, 5), (4, 6)) == 1
-        assert el._calculate_interval_overlap((1, 5), (6, 10)) == 0
+        assert _calculate_interval_overlap((1, 5), (4, 6)) == 1
+        assert _calculate_interval_overlap((1, 5), (6, 10)) == 0
 
     def test_overlap_over_threshold(self):
-        el = ExistenceLabel(mock_label_description)
-        assert el._overlap_over_threshold(5, 3, 10, True)
-        assert not el._overlap_over_threshold(5, 6, 10, True)
-        assert el._overlap_over_threshold(5, 0.4, 10, False)
-        assert not el._overlap_over_threshold(5, 0.6, 10, False)
-        assert not el._overlap_over_threshold(0, 0, 10, True)
-        assert not el._overlap_over_threshold(0, 0, 10, False)
+        assert _overlap_over_threshold(5, 3, 10, True)
+        assert not _overlap_over_threshold(5, 6, 10, True)
+        assert _overlap_over_threshold(5, 0.4, 10, False)
+        assert not _overlap_over_threshold(5, 0.6, 10, False)
+        assert not _overlap_over_threshold(0, 0, 10, True)
+        assert not _overlap_over_threshold(0, 0, 10, False)
 
     def test_label(self):
         el = ExistenceLabel(mock_label_description)

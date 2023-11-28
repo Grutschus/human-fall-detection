@@ -29,3 +29,6 @@ dependencies:
       - ipympl>=0.9
       - pandas-stubs>=2.1
       - ffmpeg-python>=0.2
+      - dvclive>=3.3
+      - tensorboard>=2.15
+      - torch-tb-profiler>=0.4
