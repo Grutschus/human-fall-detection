@@ -25,6 +25,7 @@ model = dict(
         num_classes=3,
         in_channels=384,
         average_clips="prob",
+        topk=(1,),
     ),
     data_preprocessor=dict(
         type="ActionDataPreprocessor",
@@ -43,8 +44,22 @@ train_cfg = dict(type="EpochBasedTrainLoop", max_epochs=35, val_interval=1)
 # TODO: Think about fine-tuning param scheduler
 param_scheduler = [
     dict(
-        type="LinearLR", start_factor=0.001, by_epoch=True, begin=0, end=5
-    ),  # From VideoMAEv2 repo
+        type="LinearLR",
+        by_epoch=True,
+        convert_to_iter_based=True,
+        start_factor=0.0,
+        end_factor=1,
+        begin=0,
+        end=5,
+    ),  # From VideoMAEv2 repo - Warmup
+    dict(
+        type="CosineAnnealingLR",
+        by_epoch=True,
+        convert_to_iter_based=True,
+        eta_min=1e-6,
+        begin=5,
+        end=35,
+    ),
 ]
 
 optim_wrapper = dict(
