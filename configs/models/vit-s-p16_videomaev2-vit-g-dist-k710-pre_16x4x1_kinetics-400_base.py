@@ -60,13 +60,25 @@ optim_wrapper = dict(
 
 # VALIDATION CONFIG
 val_evaluator = dict(
-    type="AccMetric", metric_options=dict(top_k_accuracy=dict(topk=(1,)))
+    type="AddAccMetric",
+    metric_list=(
+        "unweighted_average_f1",
+        "per_class_f1",
+        "per_class_precision",
+        "per_class_recall",
+    ),
 )
 val_cfg = dict(type="ValLoop")
 
 
 # TEST CONFIG
 test_evaluator = dict(
-    type="AccMetric", metric_options=dict(top_k_accuracy=dict(topk=(1,)))
+    type="AddAccMetric",
+    metric_list=(
+        "unweighted_average_f1",
+        "per_class_f1",
+        "per_class_precision",
+        "per_class_recall",
+    ),
 )
 test_cfg = dict(type="TestLoop")
