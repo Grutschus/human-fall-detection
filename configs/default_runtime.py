@@ -3,7 +3,7 @@
 # Trying to skip this part, since we have custom registries not in this scope
 default_scope = "mmaction"
 work_dir = "experiments"
-custom_imports = dict(imports=["datasets"], allow_failed_imports=False)
+custom_imports = dict(imports=["datasets", "evaluation"], allow_failed_imports=False)
 launcher = "none"
 
 default_hooks = dict(
@@ -13,10 +13,10 @@ default_hooks = dict(
     param_scheduler=dict(type="ParamSchedulerHook"),
     checkpoint=dict(
         type="CheckpointHook",
-        interval=1,
+        interval=3,
         by_epoch=True,
         max_keep_ckpts=3,
-        save_best="auto",  # For CE, this is top-1-acc
+        save_best="auto",
     ),
     sampler_seed=dict(type="DistSamplerSeedHook"),
     sync_buffers=dict(type="SyncBuffersHook"),
