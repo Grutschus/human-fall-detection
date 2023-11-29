@@ -71,7 +71,7 @@ class AddAccMetric(AccMetric):
 
         # We need to calculate per class precision and recall for all metrics
         precisions, recalls = _precision_recall(preds, labels)
-        num_classes = preds[0].shape[1]
+        num_classes = preds[0].shape[0]
 
         for metric in self.metrics:
             if metric == "per_class_f1":
@@ -116,7 +116,8 @@ def _precision_recall(
         np.ndarray: Array of precisions.
         np.ndarray: Array of recalls.
     """
-    num_classes = scores[0].shape[1]
+    # num_class is list[np.ndarray] where each element is a 1D array of scores
+    num_classes = scores[0].shape[0]
     precisions = np.empty(num_classes)
     precisions.fill(np.nan)
     recalls = np.empty(num_classes)
@@ -128,11 +129,15 @@ def _precision_recall(
     # cf_matrix returns a smaller matrix if not all classes are present
     for i in range(cf_matrix.shape[0]):
         tp = cf_matrix[i, i]
-        fp = cf_matrix[i, :].sum() - tp
-        fn = cf_matrix[:, i].sum() - tp
-        precision = tp / (tp + fp)
-        precisions[i] = precision
-        recall = tp / (tp + fn)
-        recalls[i] = recall
+        fp = cf_matrix[:, i].sum() - tp
+        fn = cf_matrix[i, :].sum() - tp
+        if tp + fp == 0:
+            precisions[i] = 0.0
+        else:
+            precisions[i] = tp / (tp + fp)
+        if tp + fn == 0:
+            recalls[i] = 0.0
+        else:
+            recalls[i] = tp / (tp + fn)
 
     return precisions, recalls
