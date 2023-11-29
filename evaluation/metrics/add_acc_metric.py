@@ -28,7 +28,7 @@ class AddAccMetric(AccMetric):
 
     def __init__(
         self,
-        metric_list: Optional[Union[str, tuple[str, ...]]] = ("f1_score_per_class",),
+        metric_list: Optional[Union[str, tuple[str, ...]]] = ("per_class_f1",),
         collect_device: str = "cpu",
         metric_options: Optional[Dict] = None,
         prefix: Optional[str] = None,
@@ -74,7 +74,7 @@ class AddAccMetric(AccMetric):
         num_classes = preds[0].shape[1]
 
         for metric in self.metrics:
-            if metric == "f1_score_per_class":
+            if metric == "per_class_f1":
                 for i in range(num_classes):
                     eval_results[f"class_{i}_f1"] = (2 * precisions[i] * recalls[i]) / (
                         precisions[i] + recalls[i]
