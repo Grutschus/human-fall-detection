@@ -63,7 +63,7 @@ param_scheduler = [
 ]
 
 optim_wrapper = dict(
-    type="OptimWrapper",
+    type="AmpOptimWrapper", # Automatic Mixed Precision may speed up trainig
     optimizer=dict(
         type="AdamW",  # From VideoMAEv2 repo
         lr=1e-3,  # From VideoMAEv2 repo

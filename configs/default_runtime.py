@@ -40,7 +40,7 @@ log_processor = dict(
     by_epoch=True,
 )
 
-vis_backends = [dict(type="TensorboardVisBackend", save_dir="experiments/tensorboard")]
+vis_backends = dict(type="TensorboardVisBackend", save_dir="experiments/tensorboard")
 visualizer = dict(type="ActionVisualizer", vis_backends=vis_backends)
 
 log_level = "INFO"
