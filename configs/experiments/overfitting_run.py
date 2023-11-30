@@ -17,3 +17,6 @@ val_dataloader = dict(
         indices=100,
     ),
 )
+
+default_hooks = dict(checkpoint=dict(interval=0))
+custom_hooks = [dict(type="CustomVisualizationHook", enable=True, interval=10)]
