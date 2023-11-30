@@ -32,3 +32,4 @@ dependencies:
       - dvclive>=3.3
       - tensorboard>=2.15
       - torch-tb-profiler>=0.4
+      - moviepy>=1.0
