@@ -10,4 +10,5 @@ work_dir = f"experiments/{EXPERIMENT_NAME}"
 
 # Overrides
 default_hooks = dict(checkpoint=dict(interval=3))
-custom_hooks = [dict(type="CustomVisualizationHook", enable=True, interval=500)]
+# Roughly 2800 samples in eval -> 700 per node -> We get 10 images from the master with interval=70
+custom_hooks = [dict(type="CustomVisualizationHook", enable=True, interval=70)]
