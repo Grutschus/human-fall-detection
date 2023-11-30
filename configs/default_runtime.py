@@ -3,7 +3,9 @@
 # Trying to skip this part, since we have custom registries not in this scope
 default_scope = "mmaction"
 work_dir = "experiments"
-custom_imports = dict(imports=["datasets", "evaluation"], allow_failed_imports=False)
+custom_imports = dict(
+    imports=["datasets", "evaluation", "visualization"], allow_failed_imports=False
+)
 launcher = "none"
 
 default_hooks = dict(
@@ -24,7 +26,7 @@ default_hooks = dict(
 
 # Hook disabled since it cannot handle NCTHW tensors
 # TODO fix this
-# custom_hooks = [dict(type="VisualizationHook", enable=True)]
+custom_hooks = [dict(type="CustomVisualizationHook", enable=True)]
 
 env_cfg = dict(
     cudnn_benchmark=False,
