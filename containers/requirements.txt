@@ -5,3 +5,4 @@ ffmpeg-python>=0.2
 dvc[s3]
 dvclive>=3.3
 tensorboard>=2.15
+moviepy>=1.0
