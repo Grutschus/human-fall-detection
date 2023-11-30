@@ -61,6 +61,8 @@ class CustomVisualizationHook(VisualizationHook):
                     self.out_dir, f"{sample_name}_{step}"
                 )
 
+            draw_args.pop("show", None)
+
             self._visualizer.add_datasample(
                 sample_name,
                 video=video,
