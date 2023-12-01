@@ -155,3 +155,29 @@ class GaussianSampling(SamplingStrategy):
             sample_list.append((start, end))
 
         return sample_list
+
+
+@SAMPLING_STRATEGIES.register_module()
+class FilterSampling(SamplingStrategy):
+    """Meta-sampling strategy that performs video-level filtering.
+
+    It drops complete videos from the dataset."""
+
+    def __init__(
+        self,
+        sampler: SamplingStrategy | dict,
+        filter_column_name: str = "category",
+        values: str | list[str] | None = "ADL",
+        blacklist: bool = True,
+    ) -> None:
+        if isinstance(sampler, dict):
+            self.sampler = SAMPLING_STRATEGIES.build(sampler)
+        else:
+            self.sampler = sampler
+
+    def sample(self, annotation: pd.Series) -> List[IntervalInSeconds]:
+        raise NotImplementedError
+        # Check whether the filter applies and we should discard the sample -> return empty list
+
+        # Otherwise return the samples of the sampler
+        return self.sampler.sample(annotation)
