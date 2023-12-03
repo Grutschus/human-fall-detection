@@ -162,3 +162,5 @@ cython_debug/
 # Container files
 **.sif
 /weights
+
+slurm-*.out
