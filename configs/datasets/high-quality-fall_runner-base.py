@@ -27,7 +27,7 @@ train_pipeline = [
     dict(type="SampleFrames", clip_len=16, frame_interval=4, num_clips=1),
     dict(type="DecordDecode"),
     dict(type="Resize", scale=(-1, 224)),
-    dict(type="RandomResizedCrop"),
+    dict(type="RandomCrop", size=224),
     dict(type="Resize", scale=(224, 224), keep_ratio=False),
     dict(type="Flip", flip_ratio=0.5),
     dict(type="FormatShape", input_format="NCTHW"),
@@ -46,7 +46,7 @@ train_dataloader = dict(
         ann_file=ann_file_train,
         pipeline=train_pipeline,
         num_classes=3,
-        indices=100,
+        # indices=100,
     ),
 )
 
@@ -66,21 +66,21 @@ val_pipeline = [
     dict(type="PackActionInputs"),
 ]
 
-val_dataloader = train_dataloader
-# val_dataloader = dict(
-#     batch_size=3,  # From VideoMAEv2 repo
-#     num_workers=8,
-#     persistent_workers=True,
-#     sampler=dict(type="DefaultSampler", shuffle=False),
-#     dataset=dict(
-#         type=dataset_type,
-#         sampling_strategy=sampling_strategy,
-#         label_strategy=label_strategy,
-#         ann_file=ann_file_val,
-#         pipeline=val_pipeline,
-#         num_classes=3,
-#     ),
-# )
+# val_dataloader = train_dataloader
+val_dataloader = dict(
+    batch_size=3,  # From VideoMAEv2 repo
+    num_workers=8,
+    persistent_workers=True,
+    sampler=dict(type="DefaultSampler", shuffle=False),
+    dataset=dict(
+        type=dataset_type,
+        sampling_strategy=sampling_strategy,
+        label_strategy=label_strategy,
+        ann_file=ann_file_val,
+        pipeline=val_pipeline,
+        num_classes=3,
+    ),
+)
 
 # TEST
 ann_file_test = "data/Fall_Simulation_Data/annotations_test.csv"

@@ -1,0 +1,19 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Distributed Training w/ current config",
+            "type": "shell",
+            "command": "python -m torch.distributed.launch --nproc_per_node=2 ${workspaceFolder}/mmaction2/tools/train.py --launcher pytorch ${file}",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}",
+                    "CUDA_VISIBLE_DEVICES": "2,3"
+                },
+            }
+        }
+    ]
+}
