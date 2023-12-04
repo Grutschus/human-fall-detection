@@ -1,5 +1,6 @@
 from typing import Callable, List, Optional, Union
 
+import numpy as np
 import pandas as pd
 from mmaction.datasets import BaseActionDataset
 from mmaction.registry import DATASETS
@@ -60,7 +61,10 @@ class HighQualityFallDataset(BaseActionDataset):
         modality (str): Modality of data. Support ``'RGB'``, ``'Flow'``.
             Defaults to ``'RGB'``.
         test_mode (bool): Store True when building test or validation dataset.
-            Defaults to False."""
+            Defaults to False.
+        drop_ratios (List[float], optional): List of drop ratios for each class.
+            If None, no samples are dropped. Ignored for multi_class.
+            Defaults to None."""
 
     def __init__(
         self,
@@ -74,6 +78,7 @@ class HighQualityFallDataset(BaseActionDataset):
         start_index: int = 0,
         modality: str = "RGB",
         test_mode: bool = False,
+        drop_ratios: List[float] | None = None,
         **kwargs,
     ) -> None:
         # Bug in MMENGINE: kwarg `custom_imports` is not removed from kwargs
@@ -90,6 +95,7 @@ class HighQualityFallDataset(BaseActionDataset):
             self.label_strategy = LABEL_STRATEGIES.build(label_strategy)  # type: LabelStrategy
         else:
             self.label_strategy = label_strategy
+        self.drop_ratios = drop_ratios
         super().__init__(
             ann_file,
             pipeline=pipeline,
@@ -113,6 +119,8 @@ class HighQualityFallDataset(BaseActionDataset):
             ]
 
             for clip, label in zip(sampled_clips, labels):
+                if self._should_drop(label, self.drop_ratios):
+                    continue
                 data_list.append(
                     {
                         "filename": annotation["video_path"],
@@ -121,3 +129,13 @@ class HighQualityFallDataset(BaseActionDataset):
                     }
                 )
         return data_list
+
+    def _should_drop(
+        self, label: int | list[int], drop_ratios: List[float] | None
+    ) -> bool:
+        if self.test_mode or drop_ratios is None or not isinstance(label, int):
+            return False
+        for index, drop_ratio in enumerate(drop_ratios):
+            if np.random.rand() <= drop_ratio and index == label:
+                return True
+        return False
