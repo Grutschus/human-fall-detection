@@ -13,12 +13,12 @@
             "justMyCode": false
         },
         {
-            "name": "Debug Training",
+            "name": "Debug Training w/ current config",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/mmaction2/tools/train.py",
             "args": [
-                "configs/models/vit-s-p16_videomaev2-vit-g-dist-k710-pre_16x4x1_kinetics-400_base.py"
+                "${file}"
             ],
             "console": "integratedTerminal",
             "justMyCode": false,
