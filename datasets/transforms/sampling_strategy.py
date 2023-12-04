@@ -180,4 +180,3 @@ class FilterSampling(SamplingStrategy):
         # Check whether the filter applies and we should discard the sample -> return empty list
 
         # Otherwise return the samples of the sampler
-        return self.sampler.sample(annotation)
