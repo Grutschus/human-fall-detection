@@ -9,4 +9,4 @@ apptainer exec \
     python -m torch.distributed.launch --nproc_per_node=4 \
     mmaction2/tools/train.py \
     configs/experiments/vit-b_gaussian-sampling_priority-labeling_paper-hyperparams.py \
-    --launcher pytorch
+    --launcher pytorch --resume auto
