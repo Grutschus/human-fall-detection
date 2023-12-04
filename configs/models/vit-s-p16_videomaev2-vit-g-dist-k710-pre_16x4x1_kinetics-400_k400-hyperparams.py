@@ -65,6 +65,8 @@ param_scheduler = [
     ),
 ]
 
+auto_scale_lr = dict(enable=True, base_batch_size=256)
+
 # Layer Decay and Weight Decay module configs
 vit_b_layer_decay_75_custom_keys = {
     "backbone.patch_embed.projection.weight": {
