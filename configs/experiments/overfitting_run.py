@@ -1,5 +1,5 @@
 _base_ = [
-    "../models/vit-s-p16_videomaev2-vit-g-dist-k710-pre_16x4x1_kinetics-400_base.py"
+    "../models/vit-s-p16_videomaev2-vit-g-dist-k710-pre_16x4x1_kinetics-400_k400-hyperparams.py"
 ]
 
 EXPERIMENT_NAME = "overfitting_run"
