@@ -12,7 +12,7 @@ work_dir = f"experiments/{EXPERIMENT_NAME}"
 default_hooks = dict(checkpoint=dict(interval=1))
 
 # 1487 samples in val -> 92 batches per node -> We want around 10 images
-custom_hooks = [dict(type="CustomVisualizationHook", enable=True, interval=300)]
+custom_hooks = [dict(type="CustomVisualizationHook", enable=True, interval=150)]
 
 # Use ViT-B/16
 model = dict(
