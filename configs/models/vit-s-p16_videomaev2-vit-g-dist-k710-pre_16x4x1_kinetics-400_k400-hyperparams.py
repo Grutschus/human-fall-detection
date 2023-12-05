@@ -42,7 +42,7 @@ model = dict(
 load_from = "weights/vit-small-p16_videomaev2-vit-g-dist-k710-pre_16x4x1_kinetics-400_20230510-25c748fd.pth"
 
 # TRAINING CONFIG
-train_cfg = dict(type="EpochBasedTrainLoop", max_epochs=90, val_interval=3)
+train_cfg = dict(type="EpochBasedTrainLoop", max_epochs=90, val_interval=1)
 
 # TODO: Think about fine-tuning param scheduler
 param_scheduler = [

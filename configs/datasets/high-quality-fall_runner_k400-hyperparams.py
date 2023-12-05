@@ -36,7 +36,7 @@ train_pipeline = [
 
 train_dataloader = dict(
     batch_size=12,  # From VideoMAEv2 repo
-    num_workers=8,
+    num_workers=4,
     persistent_workers=True,
     sampler=dict(type="DefaultSampler", shuffle=True),
     dataset=dict(
@@ -68,8 +68,8 @@ val_pipeline = [
 
 # val_dataloader = train_dataloader
 val_dataloader = dict(
-    batch_size=12,  # From VideoMAEv2 repo
-    num_workers=8,
+    batch_size=1,  # From VideoMAEv2 repo
+    num_workers=2,
     persistent_workers=True,
     sampler=dict(type="DefaultSampler", shuffle=False),
     dataset=dict(
@@ -98,7 +98,7 @@ test_pipeline = [
 ]
 
 test_dataloader = dict(
-    batch_size=3,  # From VideoMAEv2 repo
+    batch_size=1,  # From VideoMAEv2 repo
     num_workers=8,
     persistent_workers=True,
     sampler=dict(type="DefaultSampler", shuffle=False),
