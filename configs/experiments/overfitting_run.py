@@ -10,18 +10,22 @@ work_dir = f"experiments/{EXPERIMENT_NAME}"
 
 # Overrides
 train_dataloader = dict(
+    batch_size=1,
     sampler=dict(type="DefaultSampler", shuffle=False),
     dataset=dict(
-        indices=10,
+        indices=100,
     ),
 )
 
 ann_file_val = "data/Fall_Simulation_Data/annotations_train.csv"
 
 val_dataloader = dict(
+    num_workers=0,
+    persistent_workers=False,
+    batch_size=1,
     dataset=dict(
         ann_file=ann_file_val,
-        indices=10,
+        indices=100,
     ),
 )
 
