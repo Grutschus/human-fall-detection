@@ -7,5 +7,4 @@ apptainer exec \
     --env PYTHONPATH=$(pwd) \
     containers/c3se_job_container.sif \
     python mmaction2/tools/train.py \
-    configs/experiments/vit-b_gaussian-sampling-5s-clips-30-drop_priority-labeling_k400-hyperparams.py \
-    --resume auto
+    configs/experiments/vit-b_gaussian-sampling-5s-clips-30-drop_priority-labeling_k400-hyperparams.py
