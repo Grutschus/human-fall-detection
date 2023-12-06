@@ -30,8 +30,8 @@ train_dataloader = dict(
             fallback_sampler=dict(
                 type="UniformSampling", clip_len=5, stride=5, overlap=False
             ),
-            drop_ratios=[0.0, 0.0, 0.30],
-        )
+        ),
+        drop_ratios=[0.0, 0.0, 0.30],
     )
 )
 # We are not changing the val/test dataloaders since gaussian sampling requires labels
