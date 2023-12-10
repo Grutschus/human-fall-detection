@@ -53,7 +53,7 @@ class CustomVisualizationHook(VisualizationHook):
             elif "frame_dir" in data_sample:
                 sample_name = osp.basename(data_sample.get("frame_dir"))
             else:
-                sample_name = str(sample_id)
+                sample_name = f"visualization/{str(sample_id)}"
 
             draw_args = self.draw_args
             if self.out_dir is not None:
