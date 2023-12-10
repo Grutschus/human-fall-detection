@@ -80,6 +80,7 @@ val_dataloader = dict(
 
 test_pipeline = [
     dict(type="DecordInit"),
+    dict(type="ClipVideo"),
     dict(
         type="SampleFrames", clip_len=16, frame_interval=8, num_clips=5, test_mode=True
     ),  # From VideoMAEv2 repo
