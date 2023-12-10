@@ -76,3 +76,25 @@ val_dataloader = dict(
         pipeline=val_pipeline,
     ),
 )
+
+
+test_pipeline = [
+    dict(type="DecordInit"),
+    dict(
+        type="SampleFrames", clip_len=16, frame_interval=8, num_clips=5, test_mode=True
+    ),  # From VideoMAEv2 repo
+    dict(type="DecordDecode"),
+    dict(type="Resize", scale=(-1, 224)),
+    dict(type="ThreeCrop", crop_size=224),  # From VideoMAEv2 repo
+    dict(type="FormatShape", input_format="NCTHW"),
+    dict(type="PackActionInputs"),
+]
+
+test_dataloader = dict(
+    dataset=dict(
+        pipeline=test_pipeline,
+        sampling_strategy=dict(
+            type="UniformSampling", clip_len=5, stride=0, overlap=False
+        ),
+    )
+)
