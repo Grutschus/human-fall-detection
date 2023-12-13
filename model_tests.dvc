@@ -1,0 +1,6 @@
+outs:
+- md5: ea5466afdb49cf3effcf204a4bc52bd5.dir
+  size: 4737669843
+  nfiles: 63856
+  hash: md5
+  path: model_tests
