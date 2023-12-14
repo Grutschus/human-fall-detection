@@ -1,0 +1,5 @@
+outs:
+- md5: 0a737bd16cabb291c83aac7510441e78
+  size: 6261785
+  hash: md5
+  path: predictions.pkl
