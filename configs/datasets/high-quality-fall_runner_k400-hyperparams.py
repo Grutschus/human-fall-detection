@@ -87,6 +87,7 @@ ann_file_test = "data/Fall_Simulation_Data/annotations_test.csv"
 
 test_pipeline = [
     dict(type="DecordInit"),
+    dict(type="ClipVideo"),
     dict(
         type="SampleFrames", clip_len=16, frame_interval=4, num_clips=5, test_mode=True
     ),  # From VideoMAEv2 repo
@@ -109,5 +110,6 @@ test_dataloader = dict(
         ann_file=ann_file_test,
         pipeline=test_pipeline,
         num_classes=3,
+        test_mode=True,
     ),
 )

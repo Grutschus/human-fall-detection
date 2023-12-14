@@ -27,6 +27,29 @@
                 "PYTHONPATH": "${workspaceFolder}",
                 "CUDA_VISIBLE_DEVICES": "2"
             }
+        },
+        {
+            "name": "Debug Test w/ current config",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/mmaction2/tools/test.py",
+            "args": [
+                "${file}",
+                "experiments/vit-b_frame-int-8_gaussian-sampling-5s-clips-30-drop_priority-labeling_k400-hyperparams/best_acc_unweighted_average_f1_epoch_16.pth",
+                "--work-dir",
+                "model_tests/vit-b_frame-int-8_gaussian-sampling-5s-clips-30-drop_priority-labeling_k400-hyperparams",
+                "--dump",
+                "model_tests/vit-b_frame-int-8_gaussian-sampling-5s-clips-30-drop_priority-labeling_k400-hyperparams/predictions.pkl",
+                "--show-dir",
+                "model_tests/vit-b_frame-int-8_gaussian-sampling-5s-clips-30-drop_priority-labeling_k400-hyperparams/visualizations"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+                "CUDA_VISIBLE_DEVICES": "2"
+            }
         }
     ]
 }

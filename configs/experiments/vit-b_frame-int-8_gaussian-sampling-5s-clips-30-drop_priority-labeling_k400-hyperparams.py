@@ -4,7 +4,7 @@ _base_ = [
 
 EXPERIMENT_NAME = "vit-b_frame-int-8_gaussian-sampling-5s-clips-30-drop_priority-labeling_k400-hyperparams"
 visualizer = dict(
-    vis_backends=dict(save_dir=f"experiments/tensorboard/{EXPERIMENT_NAME}/")
+    vis_backends=dict(save_dir=f"model_tests/tensorboard/{EXPERIMENT_NAME}")
 )
 work_dir = f"experiments/{EXPERIMENT_NAME}"
 
@@ -12,7 +12,7 @@ work_dir = f"experiments/{EXPERIMENT_NAME}"
 default_hooks = dict(checkpoint=dict(interval=1))
 
 # 1487 samples in val -> 92 batches per node -> We want around 10 images
-custom_hooks = [dict(type="CustomVisualizationHook", enable=True, interval=300)]
+# custom_hooks = [dict(type="CustomVisualizationHook", enable=True, interval=300)]
 
 # Use ViT-B/16
 model = dict(
@@ -74,5 +74,30 @@ val_dataloader = dict(
             type="UniformSampling", clip_len=5, stride=0, overlap=False
         ),
         pipeline=val_pipeline,
+    ),
+)
+
+
+test_pipeline = [
+    dict(type="DecordInit"),
+    dict(type="ClipVideo"),
+    dict(
+        type="SampleFrames", clip_len=16, frame_interval=8, num_clips=5, test_mode=True
+    ),  # From VideoMAEv2 repo
+    dict(type="DecordDecode"),
+    dict(type="Resize", scale=(-1, 224)),
+    dict(type="ThreeCrop", crop_size=224),  # From VideoMAEv2 repo
+    dict(type="FormatShape", input_format="NCTHW"),
+    dict(type="PackActionInputs"),
+]
+
+test_dataloader = dict(
+    num_workers=4,
+    sampler=dict(type="DefaultSampler", shuffle=False),
+    dataset=dict(
+        pipeline=test_pipeline,
+        sampling_strategy=dict(
+            type="UniformSampling", clip_len=5, stride=0, overlap=False
+        ),
     ),
 )

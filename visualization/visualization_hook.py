@@ -41,8 +41,14 @@ class CustomVisualizationHook(VisualizationHook):
         first_sample_id = math.ceil(start_idx / self.interval) * self.interval
 
         for sample_id in range(first_sample_id, end_idx, self.interval):
-            # video.shape [1, C, T, H, W]
-            video = videos[sample_id - start_idx].squeeze(0)
+            # video.shape [B, C, T, H, W]
+            video = videos[sample_id - start_idx]
+            B, C, T, H, W = video.shape
+            # [C, B, T, H, W]
+            video = video.transpose(0, 1)
+            # [C, B * T, H, W]
+            video = video.reshape(C, B * T, H, W)
+
             # move channel to the last
             video = video.permute(1, 2, 3, 0).numpy().astype("uint8")
 

@@ -22,11 +22,12 @@ default_hooks = dict(
     ),
     sampler_seed=dict(type="DistSamplerSeedHook"),
     sync_buffers=dict(type="SyncBuffersHook"),
+    visualization=dict(type="CustomVisualizationHook"),
 )
 
 # Hook disabled since it cannot handle NCTHW tensors
 # TODO fix this
-custom_hooks = [dict(type="CustomVisualizationHook", enable=True)]
+# custom_hooks = [dict(type="CustomVisualizationHook", enable=True)]
 
 env_cfg = dict(
     cudnn_benchmark=False,
