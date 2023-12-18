@@ -16,6 +16,7 @@ dependencies:
   - pandas>=2.1
   - openpyxl>=3.0
   - scikit-learn>=1.3
+  - seaborn >= 0.12
 
   - pip:
       # code-checks
@@ -30,5 +31,6 @@ dependencies:
       - pandas-stubs>=2.1
       - ffmpeg-python>=0.2
       - tensorboard>=2.15
+      - tbparse >=0.0
       - torch-tb-profiler>=0.4
       - moviepy>=1.0
