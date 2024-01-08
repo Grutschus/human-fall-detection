@@ -1,0 +1,6 @@
+outs:
+- md5: 4b5c4d731c1f713db2248c1667716ec8.dir
+  size: 609116
+  nfiles: 8
+  hash: md5
+  path: diagrams

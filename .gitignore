@@ -166,3 +166,4 @@ cython_debug/
 slurm-*.out
 /experiments
 /model_tests
+/diagrams
