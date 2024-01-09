@@ -17,7 +17,6 @@ dependencies:
   - openpyxl>=3.0
   - scikit-learn>=1.3
   - seaborn >= 0.12
-  - av >= 11.0
 
   - pip:
       # code-checks
@@ -35,3 +34,4 @@ dependencies:
       - tbparse >=0.0
       - torch-tb-profiler>=0.4
       - moviepy>=1.0
+      - av >= 11.0
