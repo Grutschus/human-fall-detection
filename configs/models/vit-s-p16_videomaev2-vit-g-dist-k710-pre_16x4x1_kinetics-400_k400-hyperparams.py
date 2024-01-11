@@ -61,7 +61,7 @@ param_scheduler = [
         convert_to_iter_based=True,
         eta_min=1e-6,
         begin=5,
-        end=35,  # TODO: Repeat most important experiments with this corrected
+        end=90,
     ),
 ]
 
