@@ -2,7 +2,7 @@ _base_ = [
     "../models/vit-s-p16_videomaev2-vit-g-dist-k710-pre_16x4x1_kinetics-400_k400-hyperparams.py"
 ]
 
-EXPERIMENT_NAME = "vit-b_frame-int-8_gaussian-sampling-5s-clips-30-drop_priority-labeling_k400-hyperparams"
+EXPERIMENT_NAME = "frame-int-8_gaussian-sampling-5s-clips-30-drop_fixed_lr"
 visualizer = dict(
     vis_backends=dict(save_dir=f"model_tests/tensorboard/{EXPERIMENT_NAME}")
 )
