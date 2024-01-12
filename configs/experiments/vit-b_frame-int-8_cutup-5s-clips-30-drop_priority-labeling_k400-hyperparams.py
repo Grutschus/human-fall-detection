@@ -2,7 +2,7 @@ _base_ = [
     "../models/vit-s-p16_videomaev2-vit-g-dist-k710-pre_16x4x1_kinetics-400_k400-hyperparams.py"
 ]
 
-EXPERIMENT_NAME = "frame-int-8_gaussian-sampling-5s-clips-30-drop_fixed_lr"
+EXPERIMENT_NAME = "frame-int-8_cutup-5s-clips-30-drop_fixed_lr"
 visualizer = dict(
     vis_backends=dict(save_dir=f"experiments/tensorboard/{EXPERIMENT_NAME}")
 )
@@ -38,15 +38,12 @@ train_pipeline = [
 ]
 
 
-# Use Gaussian sampling
+# Use Cutup sampling
 train_dataloader = dict(
     dataset=dict(
         sampling_strategy=dict(
-            type="GaussianSampling",
+            type="UniformSampling",
             clip_len=5,
-            fallback_sampler=dict(
-                type="UniformSampling", clip_len=5, stride=5, overlap=False
-            ),
         ),
         drop_ratios=[0.0, 0.0, 0.30],
         pipeline=train_pipeline,
