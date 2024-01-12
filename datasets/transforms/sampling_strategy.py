@@ -150,6 +150,10 @@ class GaussianSampling(SamplingStrategy):
 
         sample_list = []
         for sample in samples:
+            if sample < (self.clip_len / 2) or sample > (
+                annotation["length"] - (self.clip_len / 2)
+            ):
+                continue
             start = max(0, sample - self.clip_len / 2)
             end = min(annotation["length"], sample + self.clip_len / 2)
             sample_list.append((start, end))
