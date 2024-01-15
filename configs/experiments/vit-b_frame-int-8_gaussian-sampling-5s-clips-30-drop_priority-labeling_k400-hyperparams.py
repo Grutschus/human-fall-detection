@@ -4,9 +4,9 @@ _base_ = [
 
 EXPERIMENT_NAME = "frame-int-8_gaussian-sampling-5s-clips-30-drop_fixed_lr"
 visualizer = dict(
-    vis_backends=dict(save_dir=f"experiments/tensorboard/{EXPERIMENT_NAME}")
+    vis_backends=dict(save_dir=f"model_tests/tensorboard/{EXPERIMENT_NAME}")
 )
-work_dir = f"experiments/{EXPERIMENT_NAME}"
+work_dir = f"model_tests/{EXPERIMENT_NAME}"
 
 # Overrides
 default_hooks = dict(checkpoint=dict(interval=1))
