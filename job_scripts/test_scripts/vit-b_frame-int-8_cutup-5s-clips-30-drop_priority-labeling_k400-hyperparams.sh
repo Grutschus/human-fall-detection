@@ -10,8 +10,8 @@ apptainer exec \
     mmaction2/tools/test.py \
     configs/experiments/vit-b_frame-int-8_cutup-5s-clips-30-drop_priority-labeling_k400-hyperparams.py \
     experiments/frame-int-8_cutup-5s-clips-30-drop_fixed_lr/best_acc_unweighted_average_f1_epoch_30.pth \
-    --work-dir model_tests/frame-int-8_cutup-5s-clips-30-drop_fixed_lr \
-    --dump model_tests/frame-int-8_cutup-5s-clips-30-drop_fixed_lr/predictions.pkl \
-    --show-dir model_tests/frame-int-8_cutup-5s-clips-30-drop_fixed_lr/visualizations \
-    --interval 10 \
+    --work-dir model_tests/high_temporal_resolution_frame-int-8_cutup-5s-clips-30-drop_fixed_lr \
+    --dump model_tests/high_temporal_resolution_frame-int-8_cutup-5s-clips-30-drop_fixed_lr/predictions.pkl \
+    --show-dir model_tests/high_temporal_resolution_frame-int-8_cutup-5s-clips-30-drop_fixed_lr/visualizations \
+    --interval 100 \
     --launcher pytorch
