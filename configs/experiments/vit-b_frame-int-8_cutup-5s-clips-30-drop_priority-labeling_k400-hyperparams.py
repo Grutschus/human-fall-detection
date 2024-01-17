@@ -89,7 +89,7 @@ test_pipeline = [
 ]
 
 test_dataloader = dict(
-    num_workers=4,
+    num_workers=2,
     sampler=dict(type="DefaultSampler", shuffle=False),
     dataset=dict(
         pipeline=test_pipeline,

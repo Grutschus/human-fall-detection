@@ -13,5 +13,5 @@ apptainer exec \
     --work-dir model_tests/high_temporal_resolution_frame-int-8_cutup-5s-clips-30-drop_fixed_lr \
     --dump model_tests/high_temporal_resolution_frame-int-8_cutup-5s-clips-30-drop_fixed_lr/predictions.pkl \
     --show-dir model_tests/high_temporal_resolution_frame-int-8_cutup-5s-clips-30-drop_fixed_lr/visualizations \
-    --interval 100 \
+    --interval 2000 \
     --launcher pytorch
